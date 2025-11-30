@@ -72,5 +72,20 @@ test.describe('Posts API Tests', () => {
         expect(responseBody).toHaveProperty('body', PostsData.addPost.body);
         expect(responseBody).toHaveProperty('userId', PostsData.addPost.userId);
     });
+    test('TC-DJ-POST-008: Update a post', async ({ posts }) => {
+        const response = await posts.updatePost(PostsData.ids.valid, PostsData.updatePost);
+        expect(response.status()).toBe(200);
+
+        const responseBody = await response.json();
+        expect(responseBody).toHaveProperty('title', PostsData.updatePost.title);
+        expect(responseBody).toHaveProperty('body', PostsData.updatePost.body);
+    });
+    test('TC-DJ-POST-009: Delete a post', async ({ posts }) => {
+        const response = await posts.deletePost(PostsData.ids.valid);
+        expect(response.status()).toBe(200);
+
+        const responseBody = await response.json();
+        expect(responseBody).toHaveProperty('id', PostsData.ids.valid);
+    });
 
 });
