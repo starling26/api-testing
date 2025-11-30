@@ -51,7 +51,7 @@ test.describe('Products API Tests', () => {
     });
 
     test('TC-DJ-PROD-006 - Add New Product', async ({ products }) => {
-        const response = await products.AddNewProduct(ProductData.newProduct);
+        const response = await products.AddNewProduct();
         expect(response.status()).toBe(201);
 
         const responseBody = await response.json();
@@ -73,7 +73,7 @@ test.describe('Products API Tests', () => {
 
     
     test('TC-DJ-PROD-008 - Delete a Product', async ({ products }) => {
-        const response = await products.DeleteAroduct(ProductData.ids.valid);
+        const response = await products.DeleteAroduct();
         expect(response.status()).toBe(200);
 
         const responseBody = await response.json();
