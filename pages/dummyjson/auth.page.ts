@@ -33,4 +33,19 @@ export class AuthPage {
       }
     });
   }
+
+  getAuthenticatedUser(accessToken: string) {
+    return this.request.get(`${this.baseURL}/auth/me`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`
+      }
+    });
+  }
+    accesProtectedEndpointWithotToken() {
+    return this.request.get(`${this.baseURL}/auth/me`, {
+     
+      
+    });
+  }
 }
+
