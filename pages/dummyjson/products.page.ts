@@ -7,50 +7,38 @@ export class ProductsPage {
   constructor(private request: APIRequestContext) {}
 
   getAllProducts() {
-    return this.request.get(`${this.baseURL}/products`, {
-      
-    });
+    return this.request.get(`${this.baseURL}/products`);
   }
 
-  getProductById(productId: number = 1) {
-    return this.request.get(`${this.baseURL}/products/${productId}`, {
-      
-    });
+  getProductById(id: number) {
+    return this.request.get(`${this.baseURL}/products/${id}`);
   }
+
   searchProducts(query: string) {
-    return this.request.get(`${this.baseURL}/products/search`, {
-      params: { q: query }
-    });
-  }
-  GetProductsByCategoryList() {
-    return this.request.get(`${this.baseURL}/products/categories`, {
-      
-    });
+    return this.request.get(`${this.baseURL}/products/search?q=${encodeURIComponent(query)}`);
   }
 
-  GetAllProductsCategories(){
-    return this.request.get(`${this.baseURL}/products/categories`, {
-      
-    });
+  getProductsWithPagination(limit: number, skip: number) {
+    return this.request.get(`${this.baseURL}/products?limit=${limit}&skip=${skip}`);
   }
 
-  AddNewProduct (){
-    return this.request.post(`${this.baseURL}/products/add`, {
-        data: { 'price': 999, 'title': 'New Product' }
-      
-    });
-  }
-  UpdateAProduct(){
-    return this.request.put(`${this.baseURL}/products/1`, {
-        data: { 'price': 899, 'title': 'Updated Product'}
-      
-    });
+  getAllCategories() {
+    return this.request.get(`${this.baseURL}/products/categories`);
   }
 
-  DeleteAroduct(){
-    return this.request.delete(`${this.baseURL}/products/1`, {
-      
-    });
+  getProductsByCategory(category: string) {
+    return this.request.get(`${this.baseURL}/products/category/${encodeURIComponent(category)}`);
   }
 
+  addProduct(data: any) {
+    return this.request.post(`${this.baseURL}/products/add`, { data });
+  }
+
+  updateProduct(id: number, data: any) {
+    return this.request.put(`${this.baseURL}/products/${id}`, { data });
+  }
+
+  deleteProduct(id: number) {
+    return this.request.delete(`${this.baseURL}/products/${id}`);
+  }
 }

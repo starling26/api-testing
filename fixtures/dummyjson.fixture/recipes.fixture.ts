@@ -1,13 +1,13 @@
 import { test as base } from '@playwright/test';
-import { recipesPage } from '../../pages/dummyjson/recipes.page';
+import { RecipesPage } from '../../pages/dummyjson/recipes.page';
 
-export type MyFixtures = {
-  recipes: recipesPage;
+export type RecipesFixtures = {
+  recipes: RecipesPage;
 };
 
-export const test = base.extend<MyFixtures>({
+export const test = base.extend<RecipesFixtures>({
   recipes: async ({ request }, use) => {
-    const recipes = new recipesPage(request);
+    const recipes = new RecipesPage(request);
     await use(recipes);
   }
 });
