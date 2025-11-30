@@ -33,8 +33,7 @@ export class AuthPage {
 
   accessProtectedEndpointWithoutToken() {
     return this.request.get(`${this.baseURL}/auth/me`, {
-      
+
     });
   }
 }
-

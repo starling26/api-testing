@@ -16,7 +16,7 @@ test.describe('Products API Tests', () => {
     });
 
     test('TC-DJ-PROD-002 - Get a single Product', async ({ products }) => {
-        const response = await products.getProductById(ProductData.ids.valid);
+        const response = await products.getAsingleProduct(ProductData.ids.valid);
         expect(response.status()).toBe(200);
         
         const product = await response.json();
@@ -33,7 +33,7 @@ test.describe('Products API Tests', () => {
     });
 
     test('TC-DJ-PROD-004 - Get Products by Category list', async ({ products }) => {
-        const response = await products.getAllCategories();
+        const response = await products.GetProductsByCategoryList();
         expect(response.status()).toBe(200);
 
         const responseBody = await response.json();
@@ -42,7 +42,7 @@ test.describe('Products API Tests', () => {
     });
 
     test('TC-DJ-PROD-005 - Get All Products Categories', async ({ products }) => {
-        const response = await products.getAllCategories();
+        const response = await products.GetAllProductsCategories();
         expect(response.status()).toBe(200);
 
         const responseBody = await response.json();
@@ -51,7 +51,7 @@ test.describe('Products API Tests', () => {
     });
 
     test('TC-DJ-PROD-006 - Add New Product', async ({ products }) => {
-        const response = await products.addProduct(ProductData.newProduct);
+        const response = await products.AddNewProduct(ProductData.newProduct);
         expect(response.status()).toBe(201);
 
         const responseBody = await response.json();
@@ -62,10 +62,7 @@ test.describe('Products API Tests', () => {
     });
 
     test('TC-DJ-PROD-007 - Update a Product', async ({ products }) => {
-        const response = await products.updateProduct(
-            ProductData.ids.valid,
-            ProductData.updateProduct
-        );
+        const response = await products.UpdateAProduct();
         expect(response.status()).toBe(200);
 
         const responseBody = await response.json();
@@ -74,8 +71,9 @@ test.describe('Products API Tests', () => {
         expect(responseBody.id).toEqual(ProductData.ids.valid);
     });
 
+    
     test('TC-DJ-PROD-008 - Delete a Product', async ({ products }) => {
-        const response = await products.deleteProduct(ProductData.ids.valid);
+        const response = await products.DeleteAroduct(ProductData.ids.valid);
         expect(response.status()).toBe(200);
 
         const responseBody = await response.json();
