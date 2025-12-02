@@ -1,56 +1,43 @@
-import { APIRequestContext } from '@playwright/test';
-import { apiConfig } from '../../config/api.config';
+import { APIRequestContext } from "@playwright/test";
+import { apiConfig } from "../../config/api.config";
 
 export class ProductsPage {
-  private baseURL = apiConfig.dummyjson.baseURL;
 
   constructor(private request: APIRequestContext) {}
 
   getAllProducts() {
-    return this.request.get(`${this.baseURL}/products`, {
-      
-    });
+    return this.request.get(`/products`);
   }
 
-  getAsingleProduct(productId: number = 1) {
-    return this.request.get(`${this.baseURL}/products/${productId}`, {
-      
-    });
+  getSingleProduct(productId: number) {
+    return this.request.get(`/products/${productId}`);
   }
+
   searchProducts(query: string) {
-    return this.request.get(`${this.baseURL}/products/search`, {
-      params: { q: query }
-    });
+    return this.request.get(`/products/search?q=${query}`);
   }
-  GetProductsByCategoryList() {
-    return this.request.get(`${this.baseURL}/products/categories`, {
-      
+
+  getProductsByCategoryList() {
+    return this.request.get(`/products/categories`);
+  }
+
+  getAllProductsCategories() {
+    return this.request.get(`/products/categories`);
+  }
+
+  addNewProduct(product: { title: string; price: number }) {
+    return this.request.post(`/products/add`, {
+      data: product
     });
   }
 
-  GetAllProductsCategories(){
-    return this.request.get(`${this.baseURL}/products/categories`, {
-      
+  updateProduct(productId: number, product: any) {
+    return this.request.put(`/products/${productId}`, {
+      data: product
     });
   }
 
-  AddNewProduct (){
-    return this.request.post(`${this.baseURL}/products/add`, {
-        data: { 'price': 999, 'title': 'New Product' }
-      
-    });
+  deleteProduct(productId: number) {
+    return this.request.delete(`/products/${productId}`);
   }
-  UpdateAProduct(){
-    return this.request.put(`${this.baseURL}/products/1`, {
-        data: { 'price': 899, 'title': 'Updated Product'}
-      
-    });
-  }
-
-  DeleteAroduct(){
-    return this.request.delete(`${this.baseURL}/products/1`, {
-      
-    });
-  }
-
 }

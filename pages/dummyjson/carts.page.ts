@@ -1,40 +1,35 @@
-import { APIRequestContext } from '@playwright/test';
-import { apiConfig } from '../../config/api.config';
+import { APIRequestContext } from "@playwright/test";
 
 export class CartsPage {
-  private baseURL = apiConfig.dummyjson.baseURL;
 
   constructor(private request: APIRequestContext) {}
 
+
   getAllCarts() {
-    return this.request.get(`${this.baseURL}/carts`);
+    return this.request.get(`/carts`);
   }
 
-  getAsingleCart(cartId: number) {
-    return this.request.get(`${this.baseURL}/carts/${cartId}`);
+  getAsingleCart(id: number) {
+    return this.request.get(`/carts/${id}`);
   }
 
-  addNewCart(cartData: any) {
-    return this.request.post(`${this.baseURL}/carts/add`, {
-      data: cartData
-    });
+  addNewCart(data: any) {
+    return this.request.post(`/carts/add`, { data });
   }
 
-  updateAcart(cartId: number, cartData: any) {
-    return this.request.put(`${this.baseURL}/carts/${cartId}`, {
-      data: cartData
-    });
+  updateAcart(id: number, data: any) {
+    return this.request.put(`/carts/${id}`, { data });
   }
 
-  deleteAcart(cartId: number) {
-    return this.request.delete(`${this.baseURL}/carts/${cartId}`);
+  deleteAcart(id: number) {
+    return this.request.delete(`/carts/${id}`);
   }
 
   getUserCarts(userId: number) {
-    return this.request.get(`${this.baseURL}/carts/user/${userId}`);
+    return this.request.get(`/carts/user/${userId}`);
   }
 
   limitSkipCarts(limit: number, skip: number) {
-    return this.request.get(`${this.baseURL}/carts?limit=${limit}&skip=${skip}`);
+    return this.request.get(`/carts?limit=${limit}&skip=${skip}`);
   }
 }

@@ -1,7 +1,7 @@
 import { APIRequestContext } from '@playwright/test';
 import { apiConfig } from '../../config/api.config';
 
-export class userPage{
+export class UserPage {
   private baseURL = apiConfig.dummyjson.baseURL;
   constructor(private request: APIRequestContext) {}
 
@@ -10,17 +10,14 @@ export class userPage{
       return this.request.get(`${this.baseURL}/users`);
   }
 
-  // GET - Get a single user
-  getUserById(userId: number){
-      return this.request.get(`${this.baseURL}/users/${userId}`);
-  }
-
-  // POST - Login User
   loginUser(credentials: { username: string; password: string }){
       return this.request.post(`${this.baseURL}/auth/login`, { data: credentials });
   }
 
-  // GET - Get auth user
+  getSingleUser(userId: number){
+      return this.request.get(`${this.baseURL}/users/${userId}`);
+  }
+
   getAuthUser(token: string){
       return this.request.get(`${this.baseURL}/auth/me`, {
           headers: {
@@ -29,67 +26,67 @@ export class userPage{
       });
   }
 
-  // GET - Search Users
   searchUsers(query: string){
       return this.request.get(`${this.baseURL}/users/search?q=${query}`);
   }
 
-  // GET - Filter users
   filterUsers(key: string, value: string){
       return this.request.get(`${this.baseURL}/users/filter?key=${key}&value=${value}`);
   }
 
-  // POST - Add user
-  createUser(userData: any){
-      return this.request.post(`${this.baseURL}/users/add`, { data: userData });
-  }
-
-  // GET - Limit & Skip users
   getUsersWithLimitAndSkip(limit: number, skip: number = 0){
       return this.request.get(`${this.baseURL}/users?limit=${limit}&skip=${skip}`);
   }
 
-  // GET - Sort users
   getSortedUsers(sortBy: string, order: 'asc' | 'desc' = 'asc'){
       return this.request.get(`${this.baseURL}/users?sortBy=${sortBy}&order=${order}`);
   }
 
-  // GET - Get all posts tags
+  getAllPostTags(userId: number){
+      return this.request.get(`${this.baseURL}/users/${userId}/posts/tags`);
+  }
+
+  getPostsByTag(userId: number, tag: string){
+      return this.request.get(`${this.baseURL}/users/${userId}/posts?tag=${tag}`);
+  }
+
+  getUserCarts(userId: number){
+      return this.request.get(`${this.baseURL}/users/${userId}/carts`);
+  }
+
+  getUserPosts(userId: number){
+      return this.request.get(`${this.baseURL}/users/${userId}/posts`);
+  }
+
+  getUserTodos(userId: number){
+      return this.request.get(`${this.baseURL}/users/${userId}/todos`);
+  }
+
+  // Missing methods for your test plan
+  getUsersWithLimitSkipSelect(limit: number, skip: number, select: string){
+      return this.request.get(`${this.baseURL}/users?limit=${limit}&skip=${skip}&select=${select}`);
+  }
+
   getAllPostsTags(){
       return this.request.get(`${this.baseURL}/posts/tags`);
   }
 
-  // GET - Get posts tag list
-  getPostsTagList(){
+  getPostsTagsList(){
       return this.request.get(`${this.baseURL}/posts/tag-list`);
   }
 
-  // GET - Get posts by tag
-  getPostsByTag(tag: string){
+  getPostsByTagGlobal(tag: string){
       return this.request.get(`${this.baseURL}/posts/tag/${tag}`);
   }
 
-  // GET - Get user's carts
-  getUserCarts(userId: number){
-      return this.request.get(`${this.baseURL}/carts/user/${userId}`);
+  addUser(userData: any){
+      return this.request.post(`${this.baseURL}/users/add`, { data: userData });
   }
 
-  // GET - Get user's posts
-  getUserPosts(userId: number){
-      return this.request.get(`${this.baseURL}/posts/user/${userId}`);
-  }
-
-  // GET - Get user's todos
-  getUserTodos(userId: number){
-      return this.request.get(`${this.baseURL}/todos/user/${userId}`);
-  }
-
-  // PUT - Update User
   updateUser(userId: number, userData: any){
       return this.request.put(`${this.baseURL}/users/${userId}`, { data: userData });
   }
 
-  // DELETE - Delete User
   deleteUser(userId: number){
       return this.request.delete(`${this.baseURL}/users/${userId}`);
   }

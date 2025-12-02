@@ -1,31 +1,42 @@
-import { test as base } from '@playwright/test';
-import { userPage } from '../../pages/dummyjson/user.page';
+import { test as base, request } from "@playwright/test";
+import { UserPage } from "../../pages/dummyjson/user.page";
+import { apiConfig } from "../../config/api.config";
+import { UserData } from "../../testData/user.data";
 
-export const userFixtures = {
-  VALID_CREDENTIALS: {
-    username: 'kminchelle',
-    password: '0lelplR'
+export const test = base.extend<{
+  user: UserPage;
+  userToken: string;
+  userResponse: any;
+  authenticatedUserData: any;
+}>({
+
+  user: async ({}, use) => {
+    const apiContext = await request.newContext({
+      baseURL: apiConfig.dummyjson.baseURL,
+    });
+
+    const userPage = new UserPage(apiContext);
+    await use(userPage);
+    await apiContext.dispose();
   },
 
-  INVALID_CREDENTIALS: {
-    username: 'invalid',
-    password: 'wrongpass'
-  }
-};
+  userToken: async ({ user }, use) => {
+    const response = await user.loginUser(UserData.loginCredentials);
+    const body = await response.json();
+    await use(body.accessToken);
+  },
 
-export type userFixtures = {
-  user: userPage;
-};
+  userResponse: async ({ user }, use) => {
+    const response = await user.loginUser(UserData.loginCredentials);
+    const body = await response.json();
+    await use(body);
+  },
 
-export const test = base.extend<userFixtures>({
-  user: async ({ request }, use) => {
-    const user = new userPage(request);
-    await use(user);
+  authenticatedUserData: async ({ user, userToken }, use) => {
+    const response = await user.getAuthUser(userToken);
+    const body = await response.json();
+    await use(body);
   }
 });
 
-export const {
-  VALID_CREDENTIALS, INVALID_CREDENTIALS
-} = userFixtures;
-
-export { expect } from '@playwright/test';
+export { expect } from "@playwright/test";

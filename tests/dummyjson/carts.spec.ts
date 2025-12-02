@@ -1,7 +1,7 @@
 import { test, expect } from '../../fixtures/dummyjson.fixture/carts.fixture';
 import { CartData } from '../../testData/carts.data';
 
-test.describe('Carts API Tests', () => {
+test.describe('DummyJSON - Carts API Tests', () => {
 
     test('TC-DJ-CART-001: Get All Carts', async ({ carts }) => {
         const response = await carts.getAllCarts();
@@ -26,7 +26,6 @@ test.describe('Carts API Tests', () => {
     });
 
     test('TC-DJ-CART-003: Add a new Cart', async ({ carts }) => {
-        // ✅ Pasa CartData como parámetro
         const response = await carts.addNewCart(CartData.carts.newCart);
         expect(response.status()).toBe(201);
 
@@ -57,5 +56,29 @@ test.describe('Carts API Tests', () => {
         const responseBody = await response.json();
         expect(responseBody.isDeleted).toBe(true);
         expect(responseBody).toHaveProperty('id', CartData.cartIds.toDelete);
+    });
+
+    test('TC-DJ-CART-006: Get User Carts', async ({ carts }) => {
+        const response = await carts.getUserCarts(CartData.userIds.withCarts);
+        expect(response.status()).toBe(200);
+
+        const responseBody = await response.json();
+        expect(responseBody).toHaveProperty('carts');
+        expect(Array.isArray(responseBody.carts)).toBe(true);
+        expect(responseBody).toHaveProperty('total');
+    });
+
+    test('TC-DJ-CART-007: Get Carts with Pagination', async ({ carts }) => {
+        const response = await carts.limitSkipCarts(
+            CartData.pagination.limit,
+            CartData.pagination.skip
+        );
+        expect(response.status()).toBe(200);
+
+        const responseBody = await response.json();
+        expect(responseBody).toHaveProperty('carts');
+        expect(responseBody).toHaveProperty('limit', CartData.pagination.limit);
+        expect(responseBody).toHaveProperty('skip', CartData.pagination.skip);
+        expect(Array.isArray(responseBody.carts)).toBe(true);
     });
 });

@@ -1,22 +1,21 @@
 import { APIRequestContext } from '@playwright/test';
-import { apiConfig } from '../../config/api.config';
+
 export class AuthPage {
-  private baseURL = apiConfig.dummyjson.baseURL;
 
   constructor(private request: APIRequestContext) {}
 
-  login(credentials: { username: string; password: string }) {
-    return this.request.post(`${this.baseURL}/auth/login`, {
+   login(credentials: { username: string; password: string }) {
+    return  this.request.post(`/auth/login`, {
       data: credentials
     });
   }
 
-  loginWithValidCredentials(credentials: { username: string; password: string }) {
-    return this.login(credentials);
+   loginWithValidCredentials(credentials: { username: string; password: string }) {
+    return  this.login(credentials);
   }
 
-  refreshToken(refreshToken: string) {
-    return this.request.post(`${this.baseURL}/auth/refresh`, {
+   refreshToken(refreshToken: string) {
+    return  this.request.post(`/auth/refresh`, {
       data: {
         refreshToken
       }
@@ -24,16 +23,14 @@ export class AuthPage {
   }
 
   getAuthenticatedUser(accessToken: string) {
-    return this.request.get(`${this.baseURL}/auth/me`, {
+    return  this.request.get(`/auth/me`, {
       headers: {
         Authorization: `Bearer ${accessToken}`
       }
     });
   }
 
-  accessProtectedEndpointWithoutToken() {
-    return this.request.get(`${this.baseURL}/auth/me`, {
-
-    });
+     accessProtectedEndpointWithoutToken() {
+      return this.request.get(`/auth/me`);
+    }
   }
-}
