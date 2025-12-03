@@ -24,7 +24,6 @@ test.describe('Posts API Tests', () => {
         expect(responseBody).toHaveProperty('userId');
     }); 
 
-
     test('TC-DJ-POST-004: Search posts', async ({ posts }) => {
         const response = await posts.searchPost(PostsData.search.valid);
         expect(response.status()).toBe(200);
