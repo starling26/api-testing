@@ -1,4 +1,4 @@
-export const RecipestData = {
+export const RecipesData = {
   ids: {
     valid: 1,
     invalid: -1,

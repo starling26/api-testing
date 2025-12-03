@@ -1,15 +1,19 @@
-import{test as base} from'@playwright/test';
-import { PostsPage } from '../../pages/dummyjson/ posts.page';
+import { test as base, request, expect } from "@playwright/test";
+import { PostsPage } from "../../pages/dummyjson/posts.page";
+import { apiConfig } from "../../config/api.config";
 
-export type PostsFixtures = {
-  posts: PostsPage;
-};
+export const test = base.extend<{ posts: PostsPage }>({
+  posts: async ({}, use) => {
+    const apiContext = await request.newContext({
+      baseURL: apiConfig.dummyjson.baseURL
+    });
 
-export const test = base.extend<PostsFixtures>({
-  posts: async ({ request }, use) => {
-    const posts = new PostsPage(request);
-    await use(posts);
+    const postsPage = new PostsPage(apiContext);
+
+    await use(postsPage);
+
+    await apiContext.dispose();
   }
 });
 
-export { expect } from '@playwright/test';
+export { expect };

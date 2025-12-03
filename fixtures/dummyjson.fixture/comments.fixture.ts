@@ -1,15 +1,19 @@
-import{test as base} from'@playwright/test';
-import {CommentsPage} from '../../pages/dummyjson/comments.page';
+import { test as base, request, expect } from "@playwright/test";
+import { CommentsPage } from "../../pages/dummyjson/comments.page";
+import { apiConfig } from "../../config/api.config";
 
-export type CommentsFixtures = {
-  comments: CommentsPage;
-};
+export const test = base.extend<{ comments: CommentsPage }>({
+  comments: async ({}, use) => {
+    const apiContext = await request.newContext({
+      baseURL: apiConfig.dummyjson.baseURL
+    });
 
-export const test = base.extend<CommentsFixtures>({
-  comments: async ({ request }, use) => {
-    const comments = new CommentsPage(request);
-    await use(comments);
+    const commentsPage = new CommentsPage(apiContext);
+
+    await use(commentsPage);
+
+    await apiContext.dispose();
   }
 });
 
-export { expect } from '@playwright/test';
+export { expect };

@@ -1,41 +1,41 @@
-import { test as base, request } from "@playwright/test";
+import { test as base, request, expect } from "@playwright/test";
 import { AuthPage } from "../../pages/dummyjson/auth.page";
-import { apiConfig } from "../../config/api.config";
 import { AuthData } from "../../testData/auth.data";
+import { apiConfig } from "../../config/api.config";
 
-export const test = base.extend<{
+type AuthResponse = {
+  accessToken: string;
+  [key: string]: any;
+};
+
+export type AuthFixtures = {
   auth: AuthPage;
-  authData: typeof AuthData.auth;
+  authResponse: AuthResponse;
   authToken: string;
-  authResponse: any;
-}>({
+};
 
-  authData: async ({}, use) => {
-    await use(AuthData.auth);
-  },
-
+export const test = base.extend<AuthFixtures>({
   auth: async ({}, use) => {
     const apiContext = await request.newContext({
-      baseURL: apiConfig.dummyjson.baseURL,
+      baseURL: apiConfig.dummyjson.baseURL
     });
 
     const authPage = new AuthPage(apiContext);
+
     await use(authPage);
 
     await apiContext.dispose();
   },
 
-  authToken: async ({ auth, authData }, use) => {
-    const response = await auth.login(authData.validCredentials);
-    const body = await response.json();
-    await use(body.accessToken);
+  authResponse: async ({ auth }, use) => {
+    const response = await auth.login(AuthData.auth.validCredentials);
+    const authResponse: AuthResponse = await response.json();
+    await use(authResponse);
   },
 
-  authResponse: async ({ auth, authData }, use) => {
-    const response = await auth.login(authData.validCredentials);
-    const body = await response.json();
-    await use(body);
+  authToken: async ({ authResponse }, use) => {
+    await use(authResponse.accessToken);
   }
 });
 
-export { expect } from "@playwright/test";
+export { expect };
