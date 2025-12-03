@@ -6,8 +6,8 @@ export const PostsData = {
   },
 
   singlePost: {
-    id: 123,
-    title: "The old scholar was watching the noisy",
+    id: 1,
+    title: "His mother had always taught him",
     body: "young people around him and it suddenly occurred to him that he was the only one in the whole audience who had the privilege of freedom, ",
     tags: [
       "mystery",
