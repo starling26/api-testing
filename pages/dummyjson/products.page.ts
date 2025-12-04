@@ -25,7 +25,21 @@ export class ProductsPage {
     return this.request.get(`/products/categories`);
   }
 
+  getProductsByCategory(category: string) {
+    return this.request.get(`/products/category/${category}`);
+  }
+
+  limitSkipProducts(limit: number, skip: number) {
+    return this.request.get(`/products?limit=${limit}&skip=${skip}`);
+  }
+
   addNewProduct(product: { title: string; price: number }) {
+    return this.request.post(`/products/add`, {
+      data: product
+    });
+  }
+
+  addProduct(product: any) {
     return this.request.post(`/products/add`, {
       data: product
     });
