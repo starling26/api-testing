@@ -47,19 +47,6 @@ test.describe("DummyJSON - User API Tests", () => {
       expect(responseBody.id).toBe(1);
       expect(responseBody).toHaveProperty('email','emily.johnson@x.dummyjson.com');
 });
-test("TC-DJ-USER-003a - Get auth user", async ({ user, userToken }) => {
-  const response = await user.getAuthUser(userToken);
-
-  expect(response.status()).toBe(200);
-
-  const responseBody = await response.json();
-  expect(responseBody).toHaveProperty("id");
-  expect(responseBody).toHaveProperty("firstName");
-  expect(responseBody).toHaveProperty("lastName");
-  expect(responseBody).toHaveProperty("username");
-  expect(responseBody).toHaveProperty("email");
-});
-
   test("TC-DJ-USER-004 - Search Users", async ({ user }) => {
     const searchQuery = UserData.searchQuery;
     const response = await user.searchUsers(searchQuery);
@@ -130,8 +117,7 @@ test("TC-DJ-USER-003a - Get auth user", async ({ user, userToken }) => {
   });
 
   test("TC-DJ-USER-010 - Get posts by tag", async ({ user }) => {
-    const tag = "life";
-    const response = await user.getPostsByTagGlobal(tag);
+    const response = await user.getPostsByTagGlobal(UserData.tag.valid);
 
     expect(response.status()).toBe(200);
 

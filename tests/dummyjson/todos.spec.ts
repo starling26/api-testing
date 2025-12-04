@@ -30,7 +30,7 @@ test.describe('DummyJSON Todos API Tests', () => {
         expect(todo).toHaveProperty('todo');
         expect(todo).toHaveProperty('completed');
     });
-    test('TC-DJ-TODO-007 - Limit & Skip todos', async ({ todos }) => {
+    test('TC-DJ-TODO-004 - Limit & Skip todos', async ({ todos }) => {
         const response = await todos.limitAndSkipTodos(TodosData.paginations.limit, TodosData.paginations.skip);
         expect(response.status()).toBe(200);
 
@@ -43,7 +43,7 @@ test.describe('DummyJSON Todos API Tests', () => {
         expect(Array.isArray(responseBody.todos)).toBe(true);
     });
 
-    test('TC-DJ-TODO-004 - Add a New Todo', async ({ todos }) => {
+    test('TC-DJ-TODO-005 - Add a New Todo', async ({ todos }) => {
         const response = await todos.addTodo(TodosData.newTodo);
         expect(response.status()).toBe(201);
 
@@ -52,7 +52,7 @@ test.describe('DummyJSON Todos API Tests', () => {
         expect(todo).toHaveProperty('todo', TodosData.newTodo.todo);
         expect(todo).toHaveProperty('completed', TodosData.newTodo.completed);
     });
-    test('TC-DJ-TODO-005 - Update Todo', async ({ todos }) => {
+    test('TC-DJ-TODO-006 - Update Todo', async ({ todos }) => {
         const response = await todos.updateTodo(TodosData.updateDataTodo.userId, TodosData.updateDataTodo);
         expect(response.status()).toBe(200);
 
@@ -62,7 +62,7 @@ test.describe('DummyJSON Todos API Tests', () => {
         expect(todo).toHaveProperty('completed', TodosData.updateDataTodo.completed);
     });
 
-    test('TC-DJ-TODO-006 - Delete a Todo', async ({ todos }) => {
+    test('TC-DJ-TODO-007 - Delete a Todo', async ({ todos }) => {
         const response = await todos.deleteTodo(TodosData.ids.pending);
         expect(response.status()).toBe(200);
 

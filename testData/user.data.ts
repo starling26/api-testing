@@ -207,5 +207,8 @@ static posts = {
   static deleteUser = {
     id: 1
   };
+  static tag = {
+    valid: "life"
+  };
 
 }

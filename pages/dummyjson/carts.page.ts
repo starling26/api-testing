@@ -25,7 +25,7 @@ export class CartsPage {
     return this.request.delete(`/carts/${id}`);
   }
 
-  getUserCarts(userId: number) {
+  getcartsByUser(userId: number) {
     return this.request.get(`/carts/user/${userId}`);
   }
 
