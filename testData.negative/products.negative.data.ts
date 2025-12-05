@@ -13,7 +13,7 @@ export const ProductsNegativeData = {
   negativeId: -1,
 
   // TC-DJ-PROD-013: Search Products with Empty Query
-  emptyQuery: "",
+  emptyQuery: " ",
 
   // TC-DJ-PROD-014: Search Products with SQL Injection
   sqlInjectionQuery: "' OR '1'='1",
@@ -22,15 +22,23 @@ export const ProductsNegativeData = {
   nonExistentCategory: "nonexistent",
 
   // TC-DJ-PROD-016: Add Product with Missing Required Fields
-  emptyProductData: {},
+  AddProductwithMissingRequiredFields: {
+    title: "New Product",
+    // Missing price
+    description: "Updated description"
+  },
 
   // TC-DJ-PROD-017 & TC-DJ-PROD-018: Non-existent ID for update/delete
   nonExistentUpdateId: 99999,
 
-  // Valid data for update test (TC-DJ-PROD-017)
   validUpdateData: {
     title: "Updated Product",
     price: 99.99,
     description: "Updated description"
-  }
+  },
+
+  // TC-DJ-PROD-013: Search Products with Empty Query
+  searchProductsWithEmptyQuery: {
+    query: "",
+  },
 };

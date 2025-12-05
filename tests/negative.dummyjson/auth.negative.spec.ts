@@ -59,14 +59,12 @@ test.describe('Auth API Negative Tests',()=>{
         const responseBody=await response.json();
         expect(responseBody).toHaveProperty('message');
     });
-    test('TC-DJ-AUTH-NEG_009: Multiple Failed Login Attempts',async({auth})=>{
-        for(let i=0;i<5;i++){
-            await auth.login(AuthNegativeData.rateLimitPayload);
-        }
-        const response=await auth.login(AuthNegativeData.rateLimitPayload);
+    test('TC-DJ-AUTH-NEG_009: Access with Refresh Token as Bearer',async({auth})=>{
+        const response=await auth.accessProtectedEndpointWithInvalidToken(AuthNegativeData.refreshTokenPayload.refreshToken);
         expect([429,401]).toContain(response.status());
 
         const responseBody=await response.json();
         expect(responseBody).toHaveProperty('message');
     });
+
 });

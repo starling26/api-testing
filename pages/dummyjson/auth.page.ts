@@ -44,6 +44,14 @@ export class AuthPage {
         Authorization: `Bearer ${invalidToken}`
       }
     });
+    }
+
+    accessProtectedEndpointWithRefreshToken(refreshToken: string) {
+      return this.request.get('/auth/me', {
+        headers: {
+          Authorization: `Bearer ${refreshToken}`
+        }
+      });
   }
 
   getAuthenticatedUser(accessToken: string) {

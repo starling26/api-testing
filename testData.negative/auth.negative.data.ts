@@ -30,15 +30,13 @@ export const AuthNegativeData = {
     password: "test"
   },
 
-  // TC-DJ-AUTH-NEG-009: Multiple Failed Login Attempts
-  rateLimitPayload: {
-    username: "testuser",
-    password: "wrongpassword"
-  },
-
   // Invalid tokens for various test cases
   invalidTokens: {
     malformed: "invalid_token_xyz",
     refresh: "invalid_refresh_token_123"
+  },
+
+  refreshTokenPayload: {
+    refreshToken: "invalid_refresh_token_123"
   }
 };
