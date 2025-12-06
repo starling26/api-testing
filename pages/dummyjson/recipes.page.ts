@@ -1,6 +1,4 @@
 import { APIRequestContext } from '@playwright/test';
-import { RecipesNegativeData } from '../../testData.negative/recipes.negative.data';
-import { RecipesData } from '../../testData/recipes.data';
 
 export class RecipesPage {
   
@@ -34,9 +32,9 @@ export class RecipesPage {
     });
   } 
 
-  getRecipesWithInvalidLimitValue() {
+  getRecipesWithInvalidLimitValue(limit: any) {
     return this.request.get(`/recipes?`, {
-      params: { limit: 'invalid' }
+      params: { limit: limit }
     });
   }
 

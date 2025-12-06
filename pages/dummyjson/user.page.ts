@@ -12,8 +12,10 @@ export class UserPage {
       return this.request.post(`/auth/login`, { data: credentials });
   }
 
-  getSingleUser(userId: number){
-      return this.request.get(`/users/${userId}`);
+  getSingleUser(userId: any){
+      return this.request.get(`/users/`,{
+        params: { id: userId }
+      });
   }
 
   getAuthUser(token: string){
@@ -25,7 +27,9 @@ export class UserPage {
   }
 
   searchUsers(query: string){
-      return this.request.get(`/users/search?q=${query}`);
+      return this.request.get(`/users/search?q=`,{
+        params: { q: query }
+      });
   }
 
   filterUsers(key: string, value: string){
