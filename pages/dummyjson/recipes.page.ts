@@ -1,4 +1,6 @@
 import { APIRequestContext } from '@playwright/test';
+import { RecipesNegativeData } from '../../testData.negative/recipes.negative.data';
+import { RecipesData } from '../../testData/recipes.data';
 
 export class RecipesPage {
   
@@ -9,19 +11,39 @@ export class RecipesPage {
   }
 
   getRecipeById(id: number) {
-    return this.request.get(`/recipes/${id}`);
+    return this.request.get(`/recipes/`, {
+      params: { id: id }
+    });
+  }
+
+  getRecipeByInvalidId(id: any) {
+    return this.request.get(`/recipes/`, {
+      params: { id: id }
+    });
   }
 
   searchRecipes(query: string) {
-    return this.request.get(`/recipes/search?q=${encodeURIComponent(query)}`);
+    return this.request.get('/recipes/search?', {
+      params: { q: query }
+    });
   }
 
   getRecipesWithPagination(limit: number, skip: number) {
-    return this.request.get(`/recipes?limit=${limit}&skip=${skip}`);
+    return this.request.get('/recipes?', {
+      params: { limit: limit, skip: skip }
+    });
+  } 
+
+  getRecipesWithInvalidLimitValue() {
+    return this.request.get(`/recipes?`, {
+      params: { limit: 'invalid' }
+    });
   }
 
   getSortedRecipes(order: 'asc' | 'desc') {
-    return this.request.get(`/recipes?sortBy=name&order=${order}`);
+    return this.request.get(`/recipes?sortBy=name&order=`, {
+      params: { order: order }
+    });
   }
 
   getAllTags() {
@@ -29,19 +51,29 @@ export class RecipesPage {
   }
 
   getRecipesByTag(tag: string) {
-    return this.request.get(`/recipes/tag/${encodeURIComponent(tag)}`);
+    return this.request.get(`/recipes/tag/`, {
+      params: { tag: tag }
+    });
   }
 
   getRecipesByMealType(mealType: string) {
-    return this.request.get(`/recipes/meal-type/${encodeURIComponent(mealType)}`);
+    return this.request.get(`/recipes/meal-type/`, {
+      params: { mealType: mealType }
+    });
   }
 
   addRecipe(data: any) {
-    return this.request.post(`/recipes/add`, { data });
+    return this.request.post(`/recipes/add`, {
+      params: data
+    });
   }
 
   updateRecipe(id: number, data: any) {
-    return this.request.put(`/recipes/${id}`, { data });
+    return this.request.put(`/recipes/`, {
+      params: { id: id },
+      data: data
+
+    });
   }
 
   deleteRecipe(id: number) {

@@ -18,6 +18,8 @@ export const CartsNegativeData = {
   // TC-DJ-CARTS-012: Get Carts by Non-existent User
   nonExistentUserId: 99999,
 
+  
+
   // TC-DJ-CARTS-013: Add Cart with Missing Required Fields
   emptyCartData: {},
 
