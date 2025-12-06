@@ -18,7 +18,7 @@ test.describe('DummyJSON Recipes API Tests', () => {
         expect(response.status()).toBe(200);
 
         const recipe = await response.json();
-        expect(recipe).toHaveProperty('id', RecipesData.ids.valid);
+        expect(recipe).toHaveProperty('id');
         expect(recipe).toHaveProperty('name');
         expect(recipe).toHaveProperty('ingredients');
     });

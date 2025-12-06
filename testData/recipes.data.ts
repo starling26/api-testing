@@ -17,8 +17,8 @@ export const RecipesData = {
   },
 
   sort: {
-    ascending: 'asc' as const,
-    descending: 'desc' as const
+    ascending: 'asc',
+    descending: 'desc'
   },
 
   tags: {
@@ -35,6 +35,7 @@ export const RecipesData = {
   },
 
   newRecipe: {
+    id: 51,
     title: 'New Recipe',
     description: 'Delicious new recipe',
     ingredients: ['Ingredient 1', 'Ingredient 2'],

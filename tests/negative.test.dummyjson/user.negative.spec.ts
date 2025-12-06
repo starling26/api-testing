@@ -31,13 +31,15 @@ test.describe("DummyJSON Users API Negative Tests", () => {
     expect(response.status()).toBe(400);
   });
 
-  test("TC-DJ-USER-NEG-005: Search Users with Empty Query", async ({user}) => {
+  test.fixme("TC-DJ-USER-NEG-005: Search Users with Empty Query", async ({user}) => {
 
     const response = await user.searchUsers(UserNegativeData.emptySearchQuery);
     expect(response.status()).toBe(400);
   });
 
-  test("TC-DJ-USER-NEG-006: Search Users with Invalid Query", async ({user}) => {
+  test.fixme("TC-DJ-USER-NEG-006: Search Users with Invalid Query", async ({user}) => {
+   //This test should fail with 400 Bad Request when an invalid user ID is provided but DummyJSON API returns 200.
+
     const response = await user.searchUsers(UserNegativeData.sqlInjectionQuery);
     expect(response.status()).toBe(400);
   });

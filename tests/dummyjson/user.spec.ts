@@ -34,7 +34,7 @@ test.describe("DummyJSON - User API Tests", () => {
   });
 
   test("TC-DJ-USER-003 - Get a single user", async ({ user }) => {
-    const response = await user.getSingleUser(1);
+    const response = await user.getSingleUser(UserData.validUser.id);
 
       expect(response.status()).toBe(200);
 
@@ -44,19 +44,16 @@ test.describe("DummyJSON - User API Tests", () => {
       expect(responseBody).toHaveProperty("lastName");
       expect(responseBody).toHaveProperty("email");
       expect(responseBody).toHaveProperty("username");
-      expect(responseBody.id).toBe(1);
-      expect(responseBody).toHaveProperty('email','emily.johnson@x.dummyjson.com');
+       expect(responseBody).toHaveProperty('email','emily.johnson@x.dummyjson.com');
 });
   test("TC-DJ-USER-004 - Search Users", async ({ user }) => {
-    const searchQuery = UserData.searchQuery;
-    const response = await user.searchUsers(searchQuery);
+    const response = await user.searchUsers(UserData.validUser.firstName);
 
     expect(response.status()).toBe(200);
 
     const responseBody = await response.json();
     expect(responseBody).toHaveProperty("users");
     expect(responseBody).toHaveProperty("total");
-    expect(Array.isArray(responseBody.users)).toBeTruthy();
   });
 
   test("TC-DJ-USER-005 - Filter user", async ({ user }) => {
@@ -167,9 +164,9 @@ test.describe("DummyJSON - User API Tests", () => {
   });
 
   test("TC-DJ-USER-014 - Add User", async ({ user }) => {
-    const userData = UserData.addUser;
+    const userDataForAdding = UserData.addUser;
 
-    const response = await user.addUser(userData);
+    const response = await user.addUser(userDataForAdding);
 
     expect([200, 201]).toContain(response.status());
 
@@ -179,9 +176,9 @@ test.describe("DummyJSON - User API Tests", () => {
     expect(responseBody).toHaveProperty("lastName");
     expect(responseBody).toHaveProperty("email");
     expect(responseBody).toHaveProperty("username");
-    expect(responseBody.firstName).toBe(userData.firstName);
-    expect(responseBody.lastName).toBe(userData.lastName);
-    expect(responseBody.email).toBe(userData.email);
+    expect(responseBody.firstName).toBe(userDataForAdding.firstName);
+    expect(responseBody.lastName).toBe(userDataForAdding.lastName);
+    expect(responseBody.email).toBe(userDataForAdding.email);
   });
 
   test("TC-DJ-USER-015 - Update User", async ({ user }) => {

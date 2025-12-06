@@ -21,6 +21,8 @@ export const UserNegativeData = {
   // TC-DJ-USER-NEG-005: Search Users with Empty Query
   emptySearchQuery: "",
 
+  
+
   // TC-DJ-USER-NEG-006: Search Users with SQL Injection
   sqlInjectionQuery: "' OR '1'='1",
 

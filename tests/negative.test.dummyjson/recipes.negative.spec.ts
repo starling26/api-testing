@@ -42,13 +42,13 @@ test.describe("DummyJSON Recipes API Negative Tests", () => {
     });
 
     test("TC-DJ-REC-NEG-007: Get Recipes by Non-existent Tag", async ({recipes}) => {
-            const response = await recipes.getRecipesByTag(RecipesNegativeData.nonExistentTag);
+            const response = await recipes.nonExistentTag(RecipesNegativeData.nonExistentTag);
             expect(response.status()).toBe(404);
 
     });
 
     test("TC-DJ-REC-NEG-008: Get Recipes by Non-existent Meal Type", async ({recipes}) => {
-            const response = await recipes.getRecipesByMealType(RecipesNegativeData.invalidMealType);
+            const response = await recipes.getRecipesByNonExistentMealType(RecipesNegativeData.invalidMealType);
             expect(response.status()).toBe(404);
 
     });

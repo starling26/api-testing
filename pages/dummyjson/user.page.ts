@@ -13,9 +13,7 @@ export class UserPage {
   }
 
   getSingleUser(userId: any){
-      return this.request.get(`/users/`,{
-        params: { id: userId }
-      });
+      return this.request.get(`/users/${userId}`);
   }
 
   getAuthUser(token: string){
@@ -27,16 +25,18 @@ export class UserPage {
   }
 
   searchUsers(query: string){
-      return this.request.get(`/users/search?q=`,{
-        params: { q: query }
+      return this.request.get(`/users/search?`, {
+          params: { q: query }
       });
+
   }
+
 
   filterUsers(key: string, value: string){
       return this.request.get(`/users/filter?key=${key}&value=${value}`);
   }
 
-  getUsersWithLimitAndSkip(limit: number, skip: number = 0){
+  getUsersWithLimitAndSkip(limit: number, skip: number){
       return this.request.get(`/users?limit=${limit}&skip=${skip}`);
   }
 

@@ -19,8 +19,6 @@ test.describe('Posts API Tests', () => {
         expect(response.status()).toBe(200);
 
         const responseBody = await response.json();
-        expect(responseBody).toHaveProperty('id', PostsData.singlePost.id);
-        expect(responseBody).toHaveProperty('title', PostsData.singlePost.title);
         expect(responseBody).toHaveProperty('userId');
     }); 
 

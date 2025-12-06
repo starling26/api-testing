@@ -1,49 +1,47 @@
-export class UserData {
-  
-  static validUser = {
-  id: 1,
-  firstName: "Emily",
-  lastName: "Johnson",
-  email: "emily.johnson@x.dummyjson.com",
-  username: "emilys",
-  password: "emilyspass"
-  };
-
-  static loginCredentials = {
-  username: "emilys",
-  password: "emilyspass",
-  expiresInMins: 30
-  };
-
-  static invalidCredentials = {
-  wrongUsername: {
-    username: "wronguser",
-    password: "emilyspass",
-    expiresInMins: 30
-  },
-  wrongPassword: {
+export const UserData = {
+  validUser: {
+    id: 1,
+    firstName: "Emily",
+    lastName: "Johnson",
+    email: "emily.johnson@x.dummyjson.com",
     username: "emilys",
-    password: "wrongpassword",
-    expiresInMins: 30
+    password: "emilyspass"
   },
-  emptyCredentials: {
-    username: "",
-    password: "",
-    expiresInMins: 30
-  },
-  nullCredentials: {
-    username: null,
-    password: null,
-    expiresInMins: 30
-  },
-  missingUsername: {
+
+  loginCredentials: {
+    username: "emilys",
     password: "emilyspass",
     expiresInMins: 30
   },
 
-  };
+  invalidCredentials: {
+    wrongUsername: {
+      username: "wronguser",
+      password: "emilyspass",
+      expiresInMins: 30
+    },
+    wrongPassword: {
+      username: "emilys",
+      password: "wrongpassword",
+      expiresInMins: 30
+    },
+    emptyCredentials: {
+      username: "",
+      password: "",
+      expiresInMins: 30
+    },
+    nullCredentials: {
+      username: null,
+      password: null,
+      expiresInMins: 30
+    },
+    missingUsername: {
+      password: "emilyspass",
+      expiresInMins: 30
+    }
+  },
 
-  static addUser = {
+  addUser: {
     firstName: "Starling",
     lastName: "De La Cruz",
     age: 30,
@@ -109,27 +107,29 @@ export class UserData {
       network: "Ethereum (ERC20)"
     },
     role: "admin"
-  };
+  },
 
-  static userIds = {
-  valid: 1,
-  invalid: 999999
-  };
+  userIds: {
+    valid: 1,
+    invalid: 999999
+  },
 
-  static paginationParams = {
+  paginationParams: {
     limit: 5,
     skip: 10,
     select: "firstName"
-  };
-  static searchQuery = "John";
+  },
 
-  static filterUsers = {
+  searchQuery: "John",
+
+  filterUsers: {
     valid: {
       key: "hair.color",
       value: "Brown"
     }
-  };
-  static carts = {
+  },
+
+  carts: {
     valid: {
       userId: 6,
       total: 1749.9
@@ -137,8 +137,9 @@ export class UserData {
     invalid: {
       userId: 999999
     }
-  };
-static posts = {
+  },
+
+  posts: {
   valid: {
     posts: [
       {
@@ -177,9 +178,9 @@ static posts = {
     skip: 0,
     limit: 2
   }
-};
+  },
 
-  static todos = {
+  todos: {
     valid: {
       todos: [
         {
@@ -197,18 +198,26 @@ static posts = {
       skip: 0,
       limit: 2
     }
-  };
-  static updateData = {
+  },
+
+  updateData: {
     firstName: "UpdatedFirstName",
     lastName: "UpdatedLastName",
     email: "updated.email@x.dummyjson.com",
     id: 1
-  };
-  static deleteUser = {
-    id: 1
-  };
-  static tag = {
-    valid: "life"
-  };
+  },
 
-}
+  deleteUser: {
+    id: 1
+  },
+
+  tag: {
+    valid: "life"
+  },
+
+  searchParams: {
+    valid: "Emily",
+    empty: "",
+    sqlInjection: "'; DROP TABLE users; --"
+  }
+};
