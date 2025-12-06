@@ -1,4 +1,4 @@
-export const quotesData = {
+export const QuotesData = {
   getAllQuotes: {
     endpoint: "/quotes",
     response: {

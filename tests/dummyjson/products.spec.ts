@@ -20,7 +20,7 @@ test.describe("Products API Tests", () => {
     expect(product).toHaveProperty("id", ProductData.ids.valid);
   });
 
-  test("TC-DJ-PROD-003 - Search Products", async ({ products }) => {
+    test("TC-DJ-PROD-003 - Search Products", async ({ products }) => {
     const response = await products.searchProducts(ProductData.search.valid);
     expect(response.status()).toBe(200);
 
@@ -28,7 +28,7 @@ test.describe("Products API Tests", () => {
     expect(Array.isArray(body.products)).toBe(true);
   });
 
-  test("TC-DJ-PROD-004 - Get Products by Category list", async ({ products }) => {
+      test("TC-DJ-PROD-004 - Get Products by Category list", async ({ products }) => {
     const response = await products.getProductsByCategoryList();
     expect(response.status()).toBe(200);
 
@@ -36,6 +36,7 @@ test.describe("Products API Tests", () => {
     expect(Array.isArray(body)).toBe(true);
     expect(body.length).toEqual(ProductData.expected.totalCategories);
   });
+
 
   test("TC-DJ-PROD-005 - Get All Products Categories", async ({ products }) => {
     const response = await products.getAllProductsCategories();

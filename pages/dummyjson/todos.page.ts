@@ -1,39 +1,38 @@
-import { apiConfig } from '../../config/api.config';
-import { APIRequestContext } from "playwright/test";
+import { APIRequestContext } from '@playwright/test';
+
 
 export class TodosPage {
-  private baseURL = apiConfig.dummyjson.baseURL;
-
   constructor(private request: APIRequestContext) {}
 
+
   getAllTodos() {
-    return this.request.get(`${this.baseURL}/todos`);
+    return this.request.get(`/todos`);
   }
 
   getSingleTodo(todoId: number) {
-    return this.request.get(`${this.baseURL}/todos/${todoId}`);
+    return this.request.get(`/todos/${todoId}`);
   }
   
   randomTodo() {
-    return this.request.get(`${this.baseURL}/todos/random`);
+    return this.request.get(`/todos/random`);
   }
 
   limitAndSkipTodos(limit: number, skip: number) {
-    return this.request.get(`${this.baseURL}/todos`, {
+    return this.request.get(`/todos`, {
       params: { limit, skip }
     });
   }
 
   addTodo(todoData: any) {
-    return this.request.post(`${this.baseURL}/todos/add`, { data: todoData });
+    return this.request.post(`/todos/add`, { data: todoData });
   }
 
   updateTodo(todoId: number, todoData: any) {
-    return this.request.put(`${this.baseURL}/todos/${todoId}`, { data: todoData });
+    return this.request.put(`/todos/${todoId}`, { data: todoData });
   }
 
   deleteTodo(todoId: number) {
-    return this.request.delete(`${this.baseURL}/todos/${todoId}`);
+    return this.request.delete(`/todos/${todoId}`);
   }
 
 }

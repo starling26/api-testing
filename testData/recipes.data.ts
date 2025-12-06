@@ -1,4 +1,4 @@
-export const RecipestData = {
+export const RecipesData = {
   ids: {
     valid: 1,
     invalid: -1,
@@ -17,8 +17,8 @@ export const RecipestData = {
   },
 
   sort: {
-    ascending: 'asc' as const,
-    descending: 'desc' as const
+    ascending: 'asc',
+    descending: 'desc'
   },
 
   tags: {
@@ -35,6 +35,7 @@ export const RecipestData = {
   },
 
   newRecipe: {
+    id: 51,
     title: 'New Recipe',
     description: 'Delicious new recipe',
     ingredients: ['Ingredient 1', 'Ingredient 2'],

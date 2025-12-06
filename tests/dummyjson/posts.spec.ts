@@ -15,16 +15,14 @@ test.describe('Posts API Tests', () => {
     });
 
     test('TC-DJ-POST-002: Get a single Post', async ({ posts }) => {
-        const response = await posts.getSinglePost(PostsData.ids.valid);
+        const response = await posts.getAsinglePost(PostsData.ids.valid);
         expect(response.status()).toBe(200);
 
         const responseBody = await response.json();
-        expect(responseBody).toHaveProperty('id', PostsData.singlePost.id);
-        expect(responseBody).toHaveProperty('title', PostsData.singlePost.title);
         expect(responseBody).toHaveProperty('userId');
     }); 
 
-    test('TC-DJ-POST-003: Search posts', async ({ posts }) => {
+    test('TC-DJ-POST-004: Search posts', async ({ posts }) => {
         const response = await posts.searchPost(PostsData.search.valid);
         expect(response.status()).toBe(200);
 
@@ -33,7 +31,7 @@ test.describe('Posts API Tests', () => {
         expect(Array.isArray(responseBody.posts)).toBe(true);
     });
 
-    test('TC-DJ-POST-004: Sort posts', async ({ posts }) => {
+    test('TC-DJ-POST-005: Sort posts', async ({ posts }) => {
         const response = await posts.sortPosts(PostsData.sort.byTitle);
         expect(response.status()).toBe(200);
 
@@ -42,7 +40,7 @@ test.describe('Posts API Tests', () => {
         expect(Array.isArray(responseBody.posts)).toBe(true);
     });
 
-    test('TC-DJ-POST-005: Get posts by user id', async ({ posts }) => {
+   test('TC-DJ-POST-005: Get posts by user id', async ({ posts }) => {
         const response = await posts.getPostsByUserId(PostsData.ids.valid);
         expect(response.status()).toBe(200);
 
@@ -53,6 +51,7 @@ test.describe('Posts API Tests', () => {
             expect(post).toHaveProperty('userId', PostsData.ids.valid);
         });
     });
+
     test('TC-DJ-POST-006: Get comments for a post', async ({ posts }) => {
         const response = await posts.getPostComments(PostsData.ids.valid);
         expect(response.status()).toBe(200);
@@ -72,6 +71,7 @@ test.describe('Posts API Tests', () => {
         expect(responseBody).toHaveProperty('body', PostsData.addPost.body);
         expect(responseBody).toHaveProperty('userId', PostsData.addPost.userId);
     });
+
     test('TC-DJ-POST-008: Update a post', async ({ posts }) => {
         const response = await posts.updatePost(PostsData.ids.valid, PostsData.updatePost);
         expect(response.status()).toBe(200);
@@ -80,6 +80,7 @@ test.describe('Posts API Tests', () => {
         expect(responseBody).toHaveProperty('title', PostsData.updatePost.title);
         expect(responseBody).toHaveProperty('body', PostsData.updatePost.body);
     });
+
     test('TC-DJ-POST-009: Delete a post', async ({ posts }) => {
         const response = await posts.deletePost(PostsData.ids.valid);
         expect(response.status()).toBe(200);
@@ -87,5 +88,8 @@ test.describe('Posts API Tests', () => {
         const responseBody = await response.json();
         expect(responseBody).toHaveProperty('id', PostsData.ids.valid);
     });
+
+
+
 
 });

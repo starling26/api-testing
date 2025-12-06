@@ -2,66 +2,41 @@ import { APIRequestContext } from '@playwright/test';
 import { apiConfig } from '../../config/api.config';
 
 export class PostsPage {
-  private baseURL = apiConfig.dummyjson.baseURL;
+
   constructor(private request: APIRequestContext) {}
 
-  // GET - Get all posts
   getAllPosts() {
-    return this.request.get(`${this.baseURL}/posts`);
+    return this.request.get(`/posts`);
   }
 
-  // GET - Get a single post
-  getPostById(postId: number) {
-    return this.request.get(`${this.baseURL}/posts/${postId}`);
+  getAsinglePost(postId: number) {
+    return this.request.get(`/posts/${postId}`);
   }
 
-  // POST - Add post
-  createPost(postData: any) {
-    return this.request.post(`${this.baseURL}/posts/add`, { data: postData });
+  searchPost(query: string) {
+    return this.request.get(`/posts/search?q=${query}`);
+  }
+  
+  sortPosts(sortBy: string, order: 'asc' | 'desc' = 'asc') {
+    return this.request.get(`/posts?sortBy=${sortBy}&order=${order}`);
   }
 
-  // PUT - Update post
+  getPostsByUserId(userId: number) {
+    return this.request.get(`/posts/user/${userId}`);
+  }
+  getPostComments(postId: number) {
+    return this.request.get(`/posts/${postId}/comments`);
+  }
+  addPost(postData: any) {
+    return this.request.post(`/posts/add`, { data: postData });
+  }
+
   updatePost(postId: number, postData: any) {
-    return this.request.put(`${this.baseURL}/posts/${postId}`, { data: postData });
+    return this.request.put(`/posts/${postId}`, { data: postData });
   }
 
-  // DELETE - Delete post
   deletePost(postId: number) {
-    return this.request.delete(`${this.baseURL}/posts/${postId}`);
+    return this.request.delete(`/posts/${postId}`);
   }
 
-  // GET - Get all posts tags
-  getAllPostsTags() {
-    return this.request.get(`${this.baseURL}/posts/tags`);
-  }
-
-  // GET - Get posts tag list
-  getPostsTagList() {
-    return this.request.get(`${this.baseURL}/posts/tag-list`);
-  }
-
-  // GET - Get posts by tag
-  getPostsByTag(tag: string) {
-    return this.request.get(`${this.baseURL}/posts/tag/${tag}`);
-  }
-
-  // GET - Get user's posts
-  getUserPosts(userId: number) {
-    return this.request.get(`${this.baseURL}/posts/user/${userId}`);
-  }
-
-  // GET - Search posts
-  searchPosts(query: string) {
-    return this.request.get(`${this.baseURL}/posts/search?q=${query}`);
-  }
-
-  // GET - Limit & Skip posts
-  getPostsWithLimitAndSkip(limit: number, skip: number = 0) {
-    return this.request.get(`${this.baseURL}/posts?limit=${limit}&skip=${skip}`);
-  }
-
-  // GET - Sort posts
-  getSortedPosts(sortBy: string, order: 'asc' | 'desc' = 'asc') {
-    return this.request.get(`${this.baseURL}/posts?sortBy=${sortBy}&order=${order}`);
-  }
 }
