@@ -9,9 +9,7 @@ export const test = base.extend<{ comments: CommentsPage }>({
     });
 
     const commentsPage = new CommentsPage(apiContext);
-
     await use(commentsPage);
-
     await apiContext.dispose();
   }
 });

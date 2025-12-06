@@ -9,9 +9,7 @@ export const test = base.extend<{ recipes: RecipesPage }>({
     });
 
     const recipesPage = new RecipesPage(apiContext);
-
     await use(recipesPage);
-
     await apiContext.dispose();
   }
 });

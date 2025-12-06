@@ -9,7 +9,7 @@ export class CommentsPage {
     return this.request.get('/comments');
   }
 
-  getAsingleComment(commentId: number) {
+  getAsingleComment(commentId: any) {
     return this.request.get(`/comments/${commentId}`);
   }
 
@@ -17,7 +17,7 @@ export class CommentsPage {
     return this.request.get(`/comments?limit=${limit}&skip=${skip}`);
   }
 
-  getCommentsByPostId(postId: number) {
+  getCommentsByPostId(postId: any) {
     return this.request.get(`/comments?postId=${postId}`);
   }
 

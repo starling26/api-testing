@@ -15,5 +15,5 @@ export const test = base.extend<{ products: ProductsPage }>({
     await apiContext.dispose();
   }
 });
-
 export { expect };
+

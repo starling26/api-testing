@@ -9,11 +9,8 @@ export const test = base.extend<{ posts: PostsPage }>({
     });
 
     const postsPage = new PostsPage(apiContext);
-
     await use(postsPage);
-
     await apiContext.dispose();
   }
 });
-
 export { expect };

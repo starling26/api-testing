@@ -46,7 +46,7 @@ export const PostsData = {
   },
 
   updatePost: {
-    title: 'Updated Post Title',
+    title: 'His mother had always taught him',
     body: 'This post has been updated with new content.'
   },
 

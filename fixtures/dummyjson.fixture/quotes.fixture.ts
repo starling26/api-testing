@@ -9,9 +9,7 @@ export const test = base.extend<{ quotes: QuotesPage }>({
     });
 
     const quotesPage = new QuotesPage(apiContext);
-
     await use(quotesPage);
-
     await apiContext.dispose();
   }
 });
