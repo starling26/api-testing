@@ -8,7 +8,7 @@ export class QuotesPage {
   getAllQuotes() {
     return this.request.get('/quotes');
   }
-  getAsingleQuote(quoteId: number) {
+  getAsingleQuote(quoteId: any) {
     return this.request.get(`/quotes/${quoteId}`);
   }
   getArandomQuote() {
