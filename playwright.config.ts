@@ -1,4 +1,4 @@
-import { defineConfig, devices } from '@playwright/test';
+import { defineConfig } from '@playwright/test';
 
 /**
  * Read environment variables from file.
@@ -35,10 +35,10 @@ export default defineConfig({
       name: 'Dummy API Tests',
       testMatch: ['**/tests/dummyjson/**/*.spec.ts', '**/tests/negative.test.dummyjson/**/*.spec.ts'],
       use: { baseURL: 'https://dummyjson.com' },
-    },
+    }
     // {
     //   name: 'PlaceHolder API Tests',
-    //   testMatch: ['**/tests/placeholder/**/*.spec.ts'],
+    //   testMatch:
     //   use: { baseURL: 'https://jsonplaceholder.typicode.com' },
     // },
 
