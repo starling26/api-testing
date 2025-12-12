@@ -1,5 +1,5 @@
 import{test,expect}from'../../fixtures/dummyjson.fixture/auth.fixture';
-import{AuthNegativeData}from'../../testData/testData.negative/auth.negative.data';
+import{AuthNegativeData}from'../../testData/negative/auth.negative.data';
 
 test.describe('Auth API Negative Tests',()=>{
 

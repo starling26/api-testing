@@ -1,4 +1,4 @@
-// testData/testData.negative/todos.negative.data.ts
+// testData/negative/todos.negative.data.ts
 export const TodosNegativeData = {
   // TC-DJ-TODO-NEG-001: Get Single Todo with Invalid ID
   invalidTodoId: "invalid",

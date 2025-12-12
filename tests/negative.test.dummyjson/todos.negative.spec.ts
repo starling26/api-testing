@@ -1,5 +1,5 @@
 import{test, expect} from"../../fixtures/dummyjson.fixture/todos.fixture";
-import{TodosNegativeData} from"../../testData/testData.negative/todos.negative.data";
+import{TodosNegativeData} from"../../testData/negative/todos.negative.data";
 
 test.describe("DummyJSON Todos API Negative Tests", () => {
 

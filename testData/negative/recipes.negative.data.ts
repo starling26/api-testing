@@ -1,4 +1,4 @@
-// testData/testData.negative/recipes.negative.data.ts
+// testData/negative/recipes.negative.data.ts
 export const RecipesNegativeData = {
   // TC-DJ-REC-NEG-001: Get Single Recipe with Invalid ID
   invalidRecipeId: "invalid",

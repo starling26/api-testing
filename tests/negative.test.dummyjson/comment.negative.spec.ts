@@ -1,5 +1,5 @@
 import{test, expect}from "../../fixtures/dummyjson.fixture/comments.fixture";
-import{CommentsNegativeData}from"../../testData/testData.negative/comments.negative.data";
+import{CommentsNegativeData}from"../../testData/negative/comments.negative.data";
 
 test.describe("DummyJSON Comments API Negative Tests", () => {
 

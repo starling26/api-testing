@@ -1,4 +1,4 @@
-// testData/auth.data.ts
+// testData/positive/auth.data.ts
 export const AuthData = {
   auth: {
     validCredentials: {

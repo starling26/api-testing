@@ -1,5 +1,5 @@
 import { test, expect } from '../../fixtures/dummyjson.fixture/todos.fixture';
-import { TodosData } from '../../testData/todos.data';
+import { TodosData } from '../../testData/positive/todos.data';
 
 test.describe('DummyJSON Todos API Tests', () => {
     

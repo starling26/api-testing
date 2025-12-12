@@ -1,4 +1,4 @@
-// testData/testData.negative/carts.negative.data.ts
+// testData/negative/carts.negative.data.ts
 export const CartsNegativeData = {
   // TC-DJ-CARTS-007: Get Single Cart with Invalid ID
   invalidCartId: "invalid",

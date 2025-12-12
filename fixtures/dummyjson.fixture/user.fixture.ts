@@ -1,6 +1,6 @@
 import { test as base, request, expect} from "@playwright/test";
 import { UserPage } from "../../pages/dummyjson/user.page";
-import { UserData } from "../../testData/user.data";
+import { UserData } from "../../testData/positive/user.data";
 
 
 export const test = base.extend<{

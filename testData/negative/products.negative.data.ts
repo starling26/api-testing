@@ -1,4 +1,4 @@
-// testData/testData.negative/products.negative.data.ts
+// testData/negative/products.negative.data.ts
 export const ProductsNegativeData = {
   // TC-DJ-PROD-009: Get Single Product with Invalid ID
   invalidId: "invalid",
