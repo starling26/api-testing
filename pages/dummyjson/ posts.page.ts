@@ -1,48 +1,46 @@
-import { apiConfig } from '../../config/api.config';
 import { APIRequestContext } from 'playwright/test';
 
 export class PostsPage {
-  private baseURL = apiConfig.dummyjson.baseURL;
 
   constructor(private context: APIRequestContext) {}
 
   getAllPosts() {
-    return this.context.get(`${this.baseURL}/posts`);
+    return this.context.get(`/posts`);
   }
 
   getSinglePost(id: number) {
-    return this.context.get(`${this.baseURL}/posts/${id}`);
+    return this.context.get(`/posts/${id}`);
   }
 
   searchPost(query: string) {
-    return this.context.get(`${this.baseURL}/posts/search?q=${encodeURIComponent(query)}`);
+    return this.context.get(`/posts/search?q=${encodeURIComponent(query)}`);
   }
 
   sortPosts(sortBy: string, order: 'asc' | 'desc' = 'asc') {
-    return this.context.get(`${this.baseURL}/posts?sortBy=${sortBy}&order=${order}`);
+    return this.context.get(`/posts?sortBy=${sortBy}&order=${order}`);
   }
 
 
   getPostsByUserId(userId: number) {
-    return this.context.get(`${this.baseURL}/posts/user/${userId}`);
+    return this.context.get(`/posts/user/${userId}`);
   }
   
 
   getPostComments(postId: number) {
-    return this.context.get(`${this.baseURL}/posts/${postId}/comments`);
+    return this.context.get(`/posts/${postId}/comments`);
   }
 
 
 
   addPost(data: any) {
-    return this.context.post(`${this.baseURL}/posts/add`, { data });
+    return this.context.post(`/posts/add`, { data });
   }
 
   updatePost(id: number, data: any) {
-    return this.context.put(`${this.baseURL}/posts/${id}`, { data });
+    return this.context.put(`/posts/${id}`, { data });
   }
 
   deletePost(id: number) {
-    return this.context.delete(`${this.baseURL}/posts/${id}`);
+    return this.context.delete(`/posts/${id}`);
   }
 }

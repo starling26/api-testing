@@ -32,8 +32,9 @@ export const AuthNegativeData = {
 
   // Invalid tokens for various test cases
   invalidTokens: {
-    malformed: "invalid_token_xyz",
-    refresh: "invalid_refresh_token_123"
+    invalidFormat: "invalid_token_xyz",
+    expired: "expired_token_xyz",
+    valid: "valid_but_not_authorized_token_xyz"
   },
 
   refreshTokenPayload: {

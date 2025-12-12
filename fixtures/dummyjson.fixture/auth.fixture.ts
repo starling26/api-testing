@@ -1,11 +1,10 @@
 import { test as base, request, expect } from "@playwright/test";
 import { AuthPage } from "../../pages/dummyjson/auth.page";
 import { AuthData } from "../../testData/auth.data";
-import { apiConfig } from "../../config/api.config";
 
 type AuthResponse = {
   accessToken: string;
-  [key: string]: any;
+  refreshToken: string;
 };
 
 export type AuthFixtures = {
@@ -16,9 +15,7 @@ export type AuthFixtures = {
 
 export const test = base.extend<AuthFixtures>({
   auth: async ({}, use) => {
-    const apiContext = await request.newContext({
-      baseURL: apiConfig.dummyjson.baseURL
-    });
+    const apiContext = await request.newContext();
 
     const authPage = new AuthPage(apiContext);
 

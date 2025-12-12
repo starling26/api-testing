@@ -3,10 +3,12 @@ import { AuthData } from '../../testData/auth.data';
 
 test.describe("DummyJSON - Authentication API Tests", () => {
 
-  test("TC-DJ-AUTH-001 - Login with valid Credentials", async ({ authResponse }) => {
-    expect(authResponse).toHaveProperty("accessToken");
-    expect(authResponse).toHaveProperty("refreshToken");
-    expect(authResponse.accessToken).toBeDefined();
+  test("TC-DJ-AUTH-001 - Login with valid Credentials", async ({ auth }) => {
+    const response = await auth.login(AuthData.auth.validCredentials);
+
+    expect(response.status()).toBe(200);
+    const responseBody = await response.json();
+    expect(responseBody).toHaveProperty("accessToken");
   });
 
   test("TC-DJ-AUTH-002 - Login with Invalid Credentials", async ({ auth }) => {

@@ -21,7 +21,7 @@ export default defineConfig({
   /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
   /* Use only 1 worker (sequential test execution) */
-  workers: 1,
+  workers: 4,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
@@ -36,12 +36,14 @@ export default defineConfig({
   /* Configure projects for API testing and browsers */
   projects: [
     {
-      name: 'API Tests',
-      testDir: './tests',
-      use: {
-        // No browser needed for API tests
-      },
+      name: 'Dummy API Tests',
+      use: { baseURL: 'https://dummyjson.com' },
     },
+    {
+      name: 'PlaceHolder API Tests',
+      use: { baseURL: 'https://jsonplaceholder.typicode.com' },
+    },
+
     // {
     //   name: 'chromium',
     //   use: { ...devices['Desktop Chrome'] },
@@ -52,16 +54,16 @@ export default defineConfig({
   //   },
   //   {
   //     name: 'webkit',
-  //     use: { ...devices['Desktop Safari'] },
+  
   //   },
   //   {
   //     name: 'Mobile Chrome',
-  //     use: { ...devices['Pixel 5'] },
+  
   //   },
   //   {
   //     name: 'Mobile Safari',
-  //     use: { ...devices['iPhone 12'] },
-  //   },
+  //
+  //   }
   ],
 
   /* Run your local dev server before starting the tests */
@@ -70,4 +72,6 @@ export default defineConfig({
   //   url: 'http://localhost:3000',
   //   reuseExistingServer: !process.env.CI,
   // },
+
+
 });

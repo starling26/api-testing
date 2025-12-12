@@ -1,5 +1,4 @@
 import { APIRequestContext } from '@playwright/test';
-import { apiConfig } from '../../config/api.config';
 
 export class AuthPage {
 

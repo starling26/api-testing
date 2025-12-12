@@ -1,6 +1,5 @@
 import { test as base, request, expect} from "@playwright/test";
 import { UserPage } from "../../pages/dummyjson/user.page";
-import { apiConfig } from "../../config/api.config";
 import { UserData } from "../../testData/user.data";
 
 
@@ -12,9 +11,7 @@ export const test = base.extend<{
 }>({
 
   user: async ({}, use) => {
-    const apiContext = await request.newContext({
-      baseURL: apiConfig.dummyjson.baseURL,
-    });
+    const apiContext = await request.newContext();
 
     const userPage = new UserPage(apiContext);
     await use(userPage);
