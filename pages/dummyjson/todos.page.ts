@@ -9,7 +9,7 @@ export class TodosPage {
     return this.request.get(`/todos`);
   }
 
-  getSingleTodo(todoId: number) {
+  getSingleTodo(todoId: any) {
     return this.request.get(`/todos/${todoId}`);
   }
   
@@ -24,7 +24,9 @@ export class TodosPage {
   }
 
   addTodo(todoData: any) {
-    return this.request.post(`/todos/add`, { data: todoData });
+    return this.request.post(`/todos/add`, {
+      data: todoData 
+    });
   }
 
   updateTodo(todoId: number, todoData: any) {

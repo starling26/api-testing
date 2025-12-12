@@ -28,5 +28,7 @@ export const PostsNegativeData = {
   emptyPostData: {},
 
   // TC-DJ-POST-NEG-019: Delete Post with Non-existent ID
-  nonExistentDeletePostId: 99999
+  nonExistentDeletePostId: 99999,
+
+  negativePostId: -10
 };

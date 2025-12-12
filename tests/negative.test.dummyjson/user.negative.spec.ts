@@ -1,6 +1,6 @@
 import { firefox } from 'playwright/test';
 import{test,expect}from'../../fixtures/dummyjson.fixture/user.fixture';
-import{UserNegativeData} from"../../testData.negative/user.negative.data";    
+import{UserNegativeData} from"../../testData/testData.negative/user.negative.data";    
 
 
 test.describe("DummyJSON Users API Negative Tests", () => {

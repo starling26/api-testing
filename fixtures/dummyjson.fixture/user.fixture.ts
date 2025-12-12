@@ -1,7 +1,7 @@
-import { test as base, request } from "@playwright/test";
+import { test as base, request, expect} from "@playwright/test";
 import { UserPage } from "../../pages/dummyjson/user.page";
-import { apiConfig } from "../../config/api.config";
 import { UserData } from "../../testData/user.data";
+
 
 export const test = base.extend<{
   user: UserPage;
@@ -11,15 +11,13 @@ export const test = base.extend<{
 }>({
 
   user: async ({}, use) => {
-    const apiContext = await request.newContext({
-      baseURL: apiConfig.dummyjson.baseURL,
-    });
+    const apiContext = await request.newContext();
 
     const userPage = new UserPage(apiContext);
     await use(userPage);
     await apiContext.dispose();
   },
-
+  
   userToken: async ({ user }, use) => {
     const response = await user.loginUser(UserData.loginCredentials);
     const body = await response.json();
@@ -39,4 +37,4 @@ export const test = base.extend<{
   }
 });
 
-export { expect } from "@playwright/test";
+export { expect };

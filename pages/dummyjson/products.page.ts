@@ -1,5 +1,5 @@
 import { APIRequestContext } from "@playwright/test";
-import { ProductsNegativeData } from "../../testData.negative/products.negative.data";
+import { ProductsNegativeData } from "../../testData/testData.negative/products.negative.data";
 
 export class ProductsPage {
 

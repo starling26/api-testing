@@ -1,5 +1,4 @@
 import { APIRequestContext } from '@playwright/test';
-import { apiConfig } from '../../config/api.config';
 
 export class PostsPage {
 
@@ -9,7 +8,7 @@ export class PostsPage {
     return this.request.get(`/posts`);
   }
 
-  getAsinglePost(postId: number) {
+  getAsinglePost(postId: any) {
     return this.request.get(`/posts/${postId}`);
   }
 
@@ -28,7 +27,9 @@ export class PostsPage {
     return this.request.get(`/posts/${postId}/comments`);
   }
   addPost(postData: any) {
-    return this.request.post(`/posts/add`, { data: postData });
+    return this.request.post(`/posts/add`, {
+      data: postData
+    });
   }
 
   updatePost(postId: number, postData: any) {

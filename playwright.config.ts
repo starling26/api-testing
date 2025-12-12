@@ -1,4 +1,4 @@
-import { defineConfig, devices } from '@playwright/test';
+import { defineConfig } from '@playwright/test';
 
 /**
  * Read environment variables from file.
@@ -13,7 +13,6 @@ import { defineConfig, devices } from '@playwright/test';
  */
 export default defineConfig({
   testDir: './tests',
-  testMatch: ['**/*.spec.ts', '**/*.test.ts'],
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -21,14 +20,11 @@ export default defineConfig({
   /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
   /* Use only 1 worker (sequential test execution) */
-  workers: 1,
+  workers: 4,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
-    /* Base URL to use in actions like `await page.goto('')`. */
-    // baseURL: 'https://dummyjson.com',
-
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
   },
@@ -36,12 +32,16 @@ export default defineConfig({
   /* Configure projects for API testing and browsers */
   projects: [
     {
-      name: 'API Tests',
-      testDir: './tests',
-      use: {
-        // No browser needed for API tests
-      },
-    },
+      name: 'Dummy API Tests',
+      testMatch: ['**/tests/dummyjson/**/*.spec.ts', '**/tests/negative.test.dummyjson/**/*.spec.ts'],
+      use: { baseURL: 'https://dummyjson.com' },
+    }
+    // {
+    //   name: 'PlaceHolder API Tests',
+    //   testMatch:
+    //   use: { baseURL: 'https://jsonplaceholder.typicode.com' },
+    // },
+
     // {
     //   name: 'chromium',
     //   use: { ...devices['Desktop Chrome'] },
@@ -52,16 +52,16 @@ export default defineConfig({
   //   },
   //   {
   //     name: 'webkit',
-  //     use: { ...devices['Desktop Safari'] },
+  
   //   },
   //   {
   //     name: 'Mobile Chrome',
-  //     use: { ...devices['Pixel 5'] },
+  
   //   },
   //   {
   //     name: 'Mobile Safari',
-  //     use: { ...devices['iPhone 12'] },
-  //   },
+  //
+  //   }
   ],
 
   /* Run your local dev server before starting the tests */
@@ -70,4 +70,6 @@ export default defineConfig({
   //   url: 'http://localhost:3000',
   //   reuseExistingServer: !process.env.CI,
   // },
+
+
 });
