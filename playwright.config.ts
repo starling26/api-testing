@@ -37,11 +37,11 @@ export default defineConfig({
       testMatch: ['**/tests/dummyjson/**/*.spec.ts', '**/tests/negative.test.dummyjson/**/*.spec.ts'],
       use: { baseURL: 'https://dummyjson.com' },
     },
-    {
-      name: 'PlaceHolder API Tests',
-      // testMatch:
-      use: { baseURL: 'https://jsonplaceholder.typicode.com' },
-    },
+    // {
+    //   name: 'PlaceHolder API Tests',
+    //   testMatch: ['**/tests/placeholder/**/*.spec.ts'],
+    //   use: { baseURL: 'https://jsonplaceholder.typicode.com' },
+    // },
 
     // {
     //   name: 'chromium',
