@@ -1,5 +1,5 @@
 import { test, expect } from "../../fixtures/dummyjson.fixture/products.fixture";
-import { ProductData } from "../../testData/products.data";
+import { ProductData } from "../../testData/positive/products.data";
 
 test.describe("Products API Tests", () => {
 

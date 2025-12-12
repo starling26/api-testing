@@ -1,6 +1,6 @@
 import { test as base, request, expect } from "@playwright/test";
 import { AuthPage } from "../../pages/dummyjson/auth.page";
-import { AuthData } from "../../testData/auth.data";
+import { AuthData } from "../../testData/positive/auth.data";
 
 type AuthResponse = {
   accessToken: string;

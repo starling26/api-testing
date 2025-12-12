@@ -1,4 +1,4 @@
-// testData/testData.negative/quotes.negative.data.ts
+// testData/negative/quotes.negative.data.ts
 export const QuotesNegativeData = {
   // TC-DJ-QUOTE-001: Get Single Quote with Invalid ID
   invalidQuoteId: "invalid",

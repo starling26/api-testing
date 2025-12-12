@@ -1,4 +1,4 @@
-// testData/testData.negative/auth.negative.data.ts
+// testData/negative/auth.negative.data.ts
 export const AuthNegativeData = {
   // TC-DJ-AUTH-NEG-001: Login with Invalid Credentials
   invalidCredentials: {

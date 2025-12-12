@@ -1,5 +1,5 @@
 import { test, expect } from '../../fixtures/dummyjson.fixture/comments.fixture';
-import { commentsData } from '../../testData/comments.data';
+import { commentsData } from '../../testData/positive/comments.data';
 
 test.describe('Comments API Tests', () => {
     test('TC-DJ-COMM-001: Get All Comments', async ({ comments }) => {  

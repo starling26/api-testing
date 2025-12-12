@@ -1,5 +1,5 @@
 import { test, expect } from '../../fixtures/dummyjson.fixture/recipes.fixture';
-import { RecipesData } from '../../testData/recipes.data';
+import { RecipesData } from '../../testData/positive/recipes.data';
 
 test.describe('DummyJSON Recipes API Tests', () => {
 

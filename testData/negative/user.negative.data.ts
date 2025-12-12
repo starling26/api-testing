@@ -1,4 +1,4 @@
-// testData/testData.negative/user.negative.data.ts
+// testData/negative/user.negative.data.ts
 export const UserNegativeData = {
   // TC-DJ-USER-NEG-001: Get Single User with Invalid ID
   invalidUserId: "invalid",

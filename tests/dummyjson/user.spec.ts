@@ -1,5 +1,5 @@
 import { test, expect } from '../../fixtures/dummyjson.fixture/user.fixture';
-import { UserData } from '../../testData/user.data';
+import { UserData } from '../../testData/positive/user.data';
 
 test.describe("DummyJSON - User API Tests", () => {
 

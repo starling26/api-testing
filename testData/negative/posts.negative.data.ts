@@ -1,4 +1,4 @@
-// testData/testData.negative/posts.negative.data.ts
+// testData/negative/posts.negative.data.ts
 export const PostsNegativeData = {
   // TC-DJ-POST-NEG-010: Get Single Post with Invalid ID
   invalidPostId: "invalid3445",

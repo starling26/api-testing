@@ -1,5 +1,5 @@
 import { test, expect } from '../../fixtures/dummyjson.fixture/auth.fixture';
-import { AuthData } from '../../testData/auth.data';
+import { AuthData } from '../../testData/positive/auth.data';
 
 test.describe("DummyJSON - Authentication API Tests", () => {
 

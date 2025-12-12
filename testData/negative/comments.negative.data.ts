@@ -1,4 +1,4 @@
-// testData/testData.negative/comments.negative.data.ts
+// testData/negative/comments.negative.data.ts
 export const CommentsNegativeData = {
   // TC-DJ-COM-NEG-001: Get Single Comment with Invalid ID
   invalidCommentId: "invalid",
