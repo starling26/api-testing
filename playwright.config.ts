@@ -13,6 +13,10 @@ import { defineConfig } from '@playwright/test';
  */
 export default defineConfig({
   testDir: './tests',
+    reporter: [
+    ['html'],
+    ['allure-playwright'],  // Agregar Allure
+  ],
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -21,12 +25,10 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   /* Use only 1 worker (sequential test execution) */
   workers: 4,
-  /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
+    trace: 'on-first-retry'
   },
 
   /* Configure projects for API testing and browsers */
@@ -34,7 +36,12 @@ export default defineConfig({
     {
       name: 'Dummy API Tests',
       testMatch: ['**/tests/dummyjson/**/*.spec.ts', '**/tests/negative.test.dummyjson/**/*.spec.ts'],
-      use: { baseURL: 'https://dummyjson.com' },
+      use: { 
+        baseURL: 'https://dummyjson.com',
+        /* Disable screenshots and videos for API tests */
+        screenshot: 'off',
+        video: 'off'
+      }
     }
     // {
     //   name: 'PlaceHolder API Tests',
@@ -44,11 +51,11 @@ export default defineConfig({
 
     // {
     //   name: 'chromium',
-    //   use: { ...devices['Desktop Chrome'] },
+    //   
     // },
   //   {
   //     name: 'firefox',
-  //     use: { ...devices['Desktop Firefox'] },
+  //     
   //   },
   //   {
   //     name: 'webkit',
@@ -72,4 +79,4 @@ export default defineConfig({
   // },
 
 
-});
+}); 
