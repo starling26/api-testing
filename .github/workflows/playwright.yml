@@ -1,10 +1,20 @@
 name: Playwright Tests with Allure Report
 
 on:
+  # Runs on ALL pushes to any branch
   push:
-    branches: [ main, master ]
+    branches: [ '**' ]
+  
+  # Runs on ALL pull requests
   pull_request:
-    branches: [ main, master ]
+    branches: [ '**' ]
+  
+  # Runs when merge happens (pull_request closed + merged)
+  pull_request_target:
+    types: [ closed ]
+  
+  # Allows manual execution
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -13,6 +23,8 @@ permissions:
 
 jobs:
   test:
+    # Only run if it's NOT a closed PR without merge
+    if: github.event_name != 'pull_request_target' || github.event.pull_request.merged == true
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
@@ -30,14 +42,14 @@ jobs:
     
     - name: Run Playwright tests
       id: test
-      run: npx playwright test --reporter=json,html,allure-playwright 2>&1 | tee test-output.log || true
+      run: npx playwright test --reporter=list,html,allure-playwright 2>&1 | tee test-output.log || true
     
     - name: Parse Test Results
       id: results
       if: always()
       run: |
-        # Parse results from Playwright log output (more reliable)
-        # Example output: "162 passed, 1 failed (4s)"
+        # Parse results from Playwright log output
+        # Example: "162 passed, 1 flaky, 1 failed (4s)"
         
         PASSED=$(grep -oE '[0-9]+ passed' test-output.log | grep -oE '[0-9]+' | head -1)
         FAILED=$(grep -oE '[0-9]+ failed' test-output.log | grep -oE '[0-9]+' | head -1)
@@ -50,16 +62,26 @@ jobs:
         SKIPPED=${SKIPPED:-0}
         FLAKY=${FLAKY:-0}
         
-        # Calculate total
-        TOTAL=$((PASSED + FAILED + SKIPPED))
+        # Calculate total (unique tests, without counting retries)
+        # Total = passed + failed + skipped + flaky (flaky are tests that passed after retries)
+        TOTAL=$((PASSED + FAILED + SKIPPED + FLAKY))
         
-        # Get duration (e.g., "4s" or "1m 30s")
+        # If there are flaky tests, subtract from passed because Playwright counts them twice
+        if [ "$FLAKY" -gt 0 ]; then
+          PASSED=$((PASSED - FLAKY))
+        fi
+        
+        # Recalculate total correctly
+        TOTAL=$((PASSED + FAILED + SKIPPED + FLAKY))
+        
+        # Get duration
         DURATION=$(grep -oE '\([0-9]+\.?[0-9]*s\)' test-output.log | tail -1 | tr -d '()s')
         DURATION=${DURATION:-0}
         
-        # Calculate pass rate
+        # Calculate pass rate (passed + flaky = successful)
+        SUCCESSFUL=$((PASSED + FLAKY))
         if [ "$TOTAL" -gt 0 ]; then
-          PASS_RATE=$((PASSED * 100 / TOTAL))
+          PASS_RATE=$((SUCCESSFUL * 100 / TOTAL))
         else
           PASS_RATE=0
         fi
@@ -134,7 +156,6 @@ jobs:
         force_orphan: true
 
     # NOTIFY TO MICROSOFT TEAMS - DETAILED REPORT
-    
     - name: Notify Teams
       if: always()
       run: |
