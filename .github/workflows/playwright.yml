@@ -42,7 +42,7 @@ jobs:
     
     - name: Run Playwright tests
       id: test
-      run: npx playwright test --reporter=json,html,allure-playwright 2>&1 | tee test-output.log || true
+      run: npx playwright test --reporter=list,html,allure-playwright 2>&1 | tee test-output.log || true
     
     - name: Parse Test Results
       id: results
