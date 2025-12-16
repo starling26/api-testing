@@ -29,6 +29,7 @@ jobs:
       run: npx playwright install --with-deps
     
     - name: Run Playwright tests
+      id: test
       run: npx playwright test
       continue-on-error: true
     
@@ -74,3 +75,70 @@ jobs:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./allure-report
         force_orphan: true
+
+    # ============================================
+    # NOTIFY TO MICROSOFT TEAMS
+    # ============================================
+    - name: Notify Teams - Success
+      if: steps.test.outcome == 'success'
+      run: |
+        curl -H "Content-Type: application/json" -d '{
+          "@type": "MessageCard",
+          "@context": "http://schema.org/extensions",
+          "themeColor": "00FF00",
+          "summary": "✅ Playwright Tests Passed",
+          "sections": [{
+            "activityTitle": "✅ Playwright Tests Passed",
+            "facts": [
+              { "name": "Repository", "value": "${{ github.repository }}" },
+              { "name": "Branch", "value": "${{ github.ref_name }}" },
+              { "name": "Commit", "value": "${{ github.sha }}" },
+              { "name": "Triggered by", "value": "${{ github.actor }}" }
+            ],
+            "markdown": true
+          }],
+          "potentialAction": [
+            {
+              "@type": "OpenUri",
+              "name": "View Report",
+              "targets": [{ "os": "default", "uri": "https://starling26.github.io/api-testing/" }]
+            },
+            {
+              "@type": "OpenUri",
+              "name": "View Workflow",
+              "targets": [{ "os": "default", "uri": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" }]
+            }
+          ]
+        }' ${{ secrets.TEAMS_WEBHOOK_URL }}
+
+    - name: Notify Teams - Failure
+      if: steps.test.outcome == 'failure'
+      run: |
+        curl -H "Content-Type: application/json" -d '{
+          "@type": "MessageCard",
+          "@context": "http://schema.org/extensions",
+          "themeColor": "FF0000",
+          "summary": "❌ Playwright Tests Failed",
+          "sections": [{
+            "activityTitle": "❌ Playwright Tests Failed",
+            "facts": [
+              { "name": "Repository", "value": "${{ github.repository }}" },
+              { "name": "Branch", "value": "${{ github.ref_name }}" },
+              { "name": "Commit", "value": "${{ github.sha }}" },
+              { "name": "Triggered by", "value": "${{ github.actor }}" }
+            ],
+            "markdown": true
+          }],
+          "potentialAction": [
+            {
+              "@type": "OpenUri",
+              "name": "View Report",
+              "targets": [{ "os": "default", "uri": "https://starling26.github.io/api-testing/" }]
+            },
+            {
+              "@type": "OpenUri",
+              "name": "View Workflow",
+              "targets": [{ "os": "default", "uri": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" }]
+            }
+          ]
+        }' ${{ secrets.TEAMS_WEBHOOK_URL }}
