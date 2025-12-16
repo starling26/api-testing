@@ -19,15 +19,13 @@ pr:
       - main
       - master
 
-
 variables:
   nodeVersion: '20.x'
   npmCache: $(Pipeline.Workspace)/.npm
 
 stages:
-  # ============================================
+
   # STAGE 1: Build and Validate
-  # ============================================
   - stage: Build
     displayName: 'Build & Validate'
     jobs:
@@ -64,9 +62,8 @@ stages:
               artifact: 'node_modules'
               publishLocation: 'pipeline'
 
-  # ============================================
-  # STAGE 2: Run API Tests
-  # ============================================
+
+# STAGE 2: Run API Tests
   - stage: Test
     displayName: 'Run API Tests'
     dependsOn: Build
@@ -100,14 +97,12 @@ stages:
             env:
               CI: 'true'
 
-          # Generate Allure Report
           - script: |
               npm install -g allure-commandline --save-dev
               allure generate allure-results --clean -o allure-report || true
             displayName: 'Generate Allure Report'
             condition: always()
 
-          # Publish Test Results (JUnit format for Azure DevOps)
           - task: PublishTestResults@2
             displayName: 'Publish Test Results'
             condition: always()
@@ -119,7 +114,6 @@ stages:
               failTaskOnFailedTests: false
               testRunTitle: 'Playwright API Tests - $(Build.BuildNumber)'
 
-          # Publish Playwright HTML Report
           - task: PublishPipelineArtifact@1
             displayName: 'Publish Playwright Report'
             condition: always()
@@ -128,7 +122,6 @@ stages:
               artifact: 'playwright-report'
               publishLocation: 'pipeline'
 
-          # Publish Allure Results (raw data)
           - task: PublishPipelineArtifact@1
             displayName: 'Publish Allure Results'
             condition: always()
@@ -137,7 +130,6 @@ stages:
               artifact: 'allure-results'
               publishLocation: 'pipeline'
 
-          # Publish Allure Report (generated HTML)
           - task: PublishPipelineArtifact@1
             displayName: 'Publish Allure Report'
             condition: always()
@@ -145,49 +137,3 @@ stages:
               targetPath: 'allure-report'
               artifact: 'allure-report'
               publishLocation: 'pipeline'
-
-  # ============================================
-  # STAGE 3: Publish Reports (Optional)
-  # ============================================
-  - stage: PublishReports
-    displayName: 'Publish Reports'
-    dependsOn: Test
-    condition: always()
-    jobs:
-      - job: PublishJob
-        displayName: 'Upload Reports to Azure'
-        pool:
-          vmImage: 'ubuntu-latest'
-        steps:
-          - task: DownloadPipelineArtifact@2
-            displayName: 'Download Allure Report'
-            inputs:
-              buildType: 'current'
-              artifactName: 'allure-report'
-              targetPath: '$(Pipeline.Workspace)/allure-report'
-
-          - task: DownloadPipelineArtifact@2
-            displayName: 'Download Playwright Report'
-            inputs:
-              buildType: 'current'
-              artifactName: 'playwright-report'
-              targetPath: '$(Pipeline.Workspace)/playwright-report'
-
-          # You can add additional steps here to:
-          # - Upload to Azure Blob Storage
-          # - Send notifications to Slack/Teams
-          # - Deploy reports to a web server
-
-          - script: |
-              echo "============================================"
-              echo "Test Reports Generated Successfully!"
-              echo "============================================"
-              echo ""
-              echo "Artifacts available:"
-              echo "  - playwright-report: HTML report with test details"
-              echo "  - allure-report: Allure formatted report"
-              echo "  - allure-results: Raw Allure data for history"
-              echo ""
-              echo "Download from Pipeline Artifacts section"
-              echo "============================================"
-            displayName: 'Report Summary'
