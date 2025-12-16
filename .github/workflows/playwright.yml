@@ -140,10 +140,10 @@ jobs:
           "@type": "MessageCard",
           "@context": "http://schema.org/extensions",
           "themeColor": "${{ steps.results.outputs.color }}",
-          "summary": "${{ steps.results.outputs.emoji }} Playwright Tests - ${{ steps.results.outputs.status }}",
+          "summary": "${{ steps.results.outputs.emoji }} Playwright Tests - ${{ steps.results.outputs.status }} (${{ steps.results.outputs.total }} tests)",
           "sections": [
             {
-              "activityTitle": "${{ steps.results.outputs.emoji }} Playwright Tests - ${{ steps.results.outputs.status }}",
+              "activityTitle": "${{ steps.results.outputs.emoji }} Playwright Tests - ${{ steps.results.outputs.status }} (${{ steps.results.outputs.total }} tests)",
               "activitySubtitle": "${{ github.repository }} | ${{ github.ref_name }}",
               "facts": [
                 { "name": "✅ Passed", "value": "${{ steps.results.outputs.passed }}" },
