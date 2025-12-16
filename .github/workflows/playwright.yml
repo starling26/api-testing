@@ -36,11 +36,13 @@ jobs:
       id: results
       if: always()
       run: |
-        # Parse results from Playwright log output
-        PASSED=$(grep -oP '\d+(?= passed)' test-output.log | head -1 || echo "0")
-        FAILED=$(grep -oP '\d+(?= failed)' test-output.log | head -1 || echo "0")
-        SKIPPED=$(grep -oP '\d+(?= skipped)' test-output.log | head -1 || echo "0")
-        FLAKY=$(grep -oP '\d+(?= flaky)' test-output.log | head -1 || echo "0")
+        # Parse results from Playwright log output (more reliable)
+        # Example output: "162 passed, 1 failed (4s)"
+        
+        PASSED=$(grep -oE '[0-9]+ passed' test-output.log | grep -oE '[0-9]+' | head -1)
+        FAILED=$(grep -oE '[0-9]+ failed' test-output.log | grep -oE '[0-9]+' | head -1)
+        SKIPPED=$(grep -oE '[0-9]+ skipped' test-output.log | grep -oE '[0-9]+' | head -1)
+        FLAKY=$(grep -oE '[0-9]+ flaky' test-output.log | grep -oE '[0-9]+' | head -1)
         
         # Set defaults if empty
         PASSED=${PASSED:-0}
@@ -49,10 +51,11 @@ jobs:
         FLAKY=${FLAKY:-0}
         
         # Calculate total
-        TOTAL=$((PASSED + FAILED + SKIPPED + FLAKY))
+        TOTAL=$((PASSED + FAILED + SKIPPED))
         
-        # Get duration from log
-        DURATION=$(grep -oP '\d+(\.\d+)?(?=s)' test-output.log | tail -1 || echo "0")
+        # Get duration (e.g., "4s" or "1m 30s")
+        DURATION=$(grep -oE '\([0-9]+\.?[0-9]*s\)' test-output.log | tail -1 | tr -d '()s')
+        DURATION=${DURATION:-0}
         
         # Calculate pass rate
         if [ "$TOTAL" -gt 0 ]; then
