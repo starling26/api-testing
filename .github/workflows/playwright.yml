@@ -76,12 +76,13 @@ jobs:
         publish_dir: ./allure-report
         force_orphan: true
 
-    # ============================================
+
     # NOTIFY TO MICROSOFT TEAMS
-    # ============================================
+
     - name: Notify Teams - Success
       if: steps.test.outcome == 'success'
       run: |
+
         curl -H "Content-Type: application/json" -d '{
           "@type": "MessageCard",
           "@context": "http://schema.org/extensions",
