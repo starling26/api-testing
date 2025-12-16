@@ -24,6 +24,7 @@ variables:
   npmCache: $(Pipeline.Workspace)/.npm
 
 stages:
+
   # STAGE 1: Build and Validate
   - stage: Build
     displayName: 'Build & Validate'
@@ -61,8 +62,8 @@ stages:
               artifact: 'node_modules'
               publishLocation: 'pipeline'
 
-  # STAGE 2: Run API Tests
 
+# STAGE 2: Run API Tests
   - stage: Test
     displayName: 'Run API Tests'
     dependsOn: Build
@@ -96,14 +97,12 @@ stages:
             env:
               CI: 'true'
 
-          # Generate Allure Report
           - script: |
               npm install -g allure-commandline --save-dev
               allure generate allure-results --clean -o allure-report || true
             displayName: 'Generate Allure Report'
             condition: always()
 
-          # Publish Test Results (JUnit format for Azure DevOps)
           - task: PublishTestResults@2
             displayName: 'Publish Test Results'
             condition: always()
@@ -115,7 +114,6 @@ stages:
               failTaskOnFailedTests: false
               testRunTitle: 'Playwright API Tests - $(Build.BuildNumber)'
 
-          # Publish Playwright HTML Report
           - task: PublishPipelineArtifact@1
             displayName: 'Publish Playwright Report'
             condition: always()
@@ -124,7 +122,6 @@ stages:
               artifact: 'playwright-report'
               publishLocation: 'pipeline'
 
-          # Publish Allure Results (raw data)
           - task: PublishPipelineArtifact@1
             displayName: 'Publish Allure Results'
             condition: always()
@@ -133,7 +130,6 @@ stages:
               artifact: 'allure-results'
               publishLocation: 'pipeline'
 
-          # Publish Allure Report (generated HTML)
           - task: PublishPipelineArtifact@1
             displayName: 'Publish Allure Report'
             condition: always()

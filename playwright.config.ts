@@ -13,9 +13,11 @@ import { defineConfig } from '@playwright/test';
  */
 export default defineConfig({
   testDir: './tests',
-    reporter: [
+  reporter: [
     ['html'],
-    ['allure-playwright'],  // Agregar Allure
+    ['allure-playwright'],
+    // JUnit reporter for Azure DevOps Test Results integration
+    ['junit', { outputFile: 'test-results/junit-report.xml' }],
   ],
   /* Run tests in files in parallel */
   fullyParallel: true,
@@ -43,40 +45,5 @@ export default defineConfig({
         video: 'off'
       }
     }
-    // {
-    //   name: 'PlaceHolder API Tests',
-    //   testMatch:
-    //   use: { baseURL: 'https://jsonplaceholder.typicode.com' },
-    // },
-
-    // {
-    //   name: 'chromium',
-    //   
-    // },
-  //   {
-  //     name: 'firefox',
-  //     
-  //   },
-  //   {
-  //     name: 'webkit',
-  
-  //   },
-  //   {
-  //     name: 'Mobile Chrome',
-  
-  //   },
-  //   {
-  //     name: 'Mobile Safari',
-  //
-  //   }
   ],
-
-  /* Run your local dev server before starting the tests */
-  // webServer: {
-  //   command: 'npm run start',
-  //   url: 'http://localhost:3000',
-  //   reuseExistingServer: !process.env.CI,
-  // },
-
-
-}); 
+});
