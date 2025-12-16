@@ -140,20 +140,17 @@ jobs:
           "@type": "MessageCard",
           "@context": "http://schema.org/extensions",
           "themeColor": "${{ steps.results.outputs.color }}",
-          "summary": "${{ steps.results.outputs.emoji }} Playwright Tests - ${{ steps.results.outputs.status }} (${{ steps.results.outputs.total }} tests)",
+          "summary": "${{ steps.results.outputs.emoji }} Playwright Test Results",
           "sections": [
             {
-              "activityTitle": "${{ steps.results.outputs.emoji }} Playwright Tests - ${{ steps.results.outputs.status }} (${{ steps.results.outputs.total }} tests)",
+              "activityTitle": "${{ steps.results.outputs.emoji }} Playwright Test Results",
               "activitySubtitle": "${{ github.repository }} | ${{ github.ref_name }}",
+              "text": "Se ejecutaron **${{ steps.results.outputs.total }}** tests: **${{ steps.results.outputs.passed }}** pasaron ✅, **${{ steps.results.outputs.failed }}** fallaron ❌, **${{ steps.results.outputs.skipped }}** omitidos ⏭️, **${{ steps.results.outputs.flaky }}** flaky 🔄",
               "facts": [
-                { "name": "✅ Passed", "value": "${{ steps.results.outputs.passed }}" },
-                { "name": "❌ Failed", "value": "${{ steps.results.outputs.failed }}" },
-                { "name": "⏭️ Skipped", "value": "${{ steps.results.outputs.skipped }}" },
-                { "name": "🔄 Flaky", "value": "${{ steps.results.outputs.flaky }}" },
-                { "name": "📊 Total", "value": "${{ steps.results.outputs.total }}" },
                 { "name": "📈 Pass Rate", "value": "${{ steps.results.outputs.pass_rate }}%" },
                 { "name": "⏱️ Duration", "value": "${{ steps.results.outputs.duration }}s" },
-                { "name": "👤 Triggered by", "value": "${{ github.actor }}" }
+                { "name": "👤 Triggered by", "value": "${{ github.actor }}" },
+                { "name": "🔗 Branch", "value": "${{ github.ref_name }}" }
               ],
               "markdown": true
             }
