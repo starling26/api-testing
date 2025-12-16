@@ -1,0 +1,192 @@
+# Azure DevOps Pipeline for Playwright API Tests with Allure Reporting
+# Author: Starling De La Cruz
+# Project: DummyJSON API Testing Framework
+
+trigger:
+  branches:
+    include:
+      - main
+      - master
+      - develop
+  paths:
+    exclude:
+      - README.md
+      - docs/*
+
+pr:
+  branches:
+    include:
+      - main
+      - master
+
+variables:
+  nodeVersion: '20.x'
+  npmCache: $(Pipeline.Workspace)/.npm
+
+stages:
+  # ============================================
+  # STAGE 1: Build and Validate
+  # ============================================
+  - stage: Build
+    displayName: 'Build & Validate'
+    jobs:
+      - job: BuildJob
+        displayName: 'Install Dependencies'
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - task: NodeTool@0
+            displayName: 'Install Node.js $(nodeVersion)'
+            inputs:
+              versionSpec: '$(nodeVersion)'
+
+          - task: Cache@2
+            displayName: 'Cache npm packages'
+            inputs:
+              key: 'npm | "$(Agent.OS)" | package-lock.json'
+              restoreKeys: |
+                npm | "$(Agent.OS)"
+              path: $(npmCache)
+
+          - script: |
+              npm ci --cache $(npmCache)
+            displayName: 'Install npm dependencies'
+
+          - script: |
+              npx playwright install --with-deps chromium
+            displayName: 'Install Playwright browsers'
+
+          - task: PublishPipelineArtifact@1
+            displayName: 'Publish node_modules artifact'
+            inputs:
+              targetPath: 'node_modules'
+              artifact: 'node_modules'
+              publishLocation: 'pipeline'
+
+  # ============================================
+  # STAGE 2: Run API Tests
+  # ============================================
+  - stage: Test
+    displayName: 'Run API Tests'
+    dependsOn: Build
+    jobs:
+      - job: APITests
+        displayName: 'Execute Playwright Tests'
+        pool:
+          vmImage: 'ubuntu-latest'
+        timeoutInMinutes: 30
+        steps:
+          - task: NodeTool@0
+            displayName: 'Install Node.js $(nodeVersion)'
+            inputs:
+              versionSpec: '$(nodeVersion)'
+
+          - task: DownloadPipelineArtifact@2
+            displayName: 'Download node_modules'
+            inputs:
+              buildType: 'current'
+              artifactName: 'node_modules'
+              targetPath: 'node_modules'
+
+          - script: |
+              npx playwright install --with-deps chromium
+            displayName: 'Install Playwright browsers'
+
+          - script: |
+              npx playwright test --reporter=list,html,allure-playwright
+            displayName: 'Run Playwright API Tests'
+            continueOnError: true
+            env:
+              CI: 'true'
+
+          # Generate Allure Report
+          - script: |
+              npm install -g allure-commandline --save-dev
+              allure generate allure-results --clean -o allure-report || true
+            displayName: 'Generate Allure Report'
+            condition: always()
+
+          # Publish Test Results (JUnit format for Azure DevOps)
+          - task: PublishTestResults@2
+            displayName: 'Publish Test Results'
+            condition: always()
+            inputs:
+              testResultsFormat: 'JUnit'
+              testResultsFiles: '**/test-results/**/*.xml'
+              searchFolder: '$(System.DefaultWorkingDirectory)'
+              mergeTestResults: true
+              failTaskOnFailedTests: false
+              testRunTitle: 'Playwright API Tests - $(Build.BuildNumber)'
+
+          # Publish Playwright HTML Report
+          - task: PublishPipelineArtifact@1
+            displayName: 'Publish Playwright Report'
+            condition: always()
+            inputs:
+              targetPath: 'playwright-report'
+              artifact: 'playwright-report'
+              publishLocation: 'pipeline'
+
+          # Publish Allure Results (raw data)
+          - task: PublishPipelineArtifact@1
+            displayName: 'Publish Allure Results'
+            condition: always()
+            inputs:
+              targetPath: 'allure-results'
+              artifact: 'allure-results'
+              publishLocation: 'pipeline'
+
+          # Publish Allure Report (generated HTML)
+          - task: PublishPipelineArtifact@1
+            displayName: 'Publish Allure Report'
+            condition: always()
+            inputs:
+              targetPath: 'allure-report'
+              artifact: 'allure-report'
+              publishLocation: 'pipeline'
+
+  # ============================================
+  # STAGE 3: Publish Reports (Optional)
+  # ============================================
+  - stage: PublishReports
+    displayName: 'Publish Reports'
+    dependsOn: Test
+    condition: always()
+    jobs:
+      - job: PublishJob
+        displayName: 'Upload Reports to Azure'
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - task: DownloadPipelineArtifact@2
+            displayName: 'Download Allure Report'
+            inputs:
+              buildType: 'current'
+              artifactName: 'allure-report'
+              targetPath: '$(Pipeline.Workspace)/allure-report'
+
+          - task: DownloadPipelineArtifact@2
+            displayName: 'Download Playwright Report'
+            inputs:
+              buildType: 'current'
+              artifactName: 'playwright-report'
+              targetPath: '$(Pipeline.Workspace)/playwright-report'
+
+          # You can add additional steps here to:
+          # - Upload to Azure Blob Storage
+          # - Send notifications to Slack/Teams
+          # - Deploy reports to a web server
+
+          - script: |
+              echo "============================================"
+              echo "Test Reports Generated Successfully!"
+              echo "============================================"
+              echo ""
+              echo "Artifacts available:"
+              echo "  - playwright-report: HTML report with test details"
+              echo "  - allure-report: Allure formatted report"
+              echo "  - allure-results: Raw Allure data for history"
+              echo ""
+              echo "Download from Pipeline Artifacts section"
+              echo "============================================"
+            displayName: 'Report Summary'
