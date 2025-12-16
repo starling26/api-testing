@@ -19,6 +19,7 @@ pr:
       - main
       - master
 
+
 variables:
   nodeVersion: '20.x'
   npmCache: $(Pipeline.Workspace)/.npm
