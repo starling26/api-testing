@@ -30,8 +30,62 @@ jobs:
     
     - name: Run Playwright tests
       id: test
-      run: npx playwright test
-      continue-on-error: true
+      run: npx playwright test --reporter=json,html,allure-playwright 2>&1 | tee test-output.log || true
+    
+    - name: Parse Test Results
+      id: results
+      if: always()
+      run: |
+        # Parse results from Playwright log output
+        PASSED=$(grep -oP '\d+(?= passed)' test-output.log | head -1 || echo "0")
+        FAILED=$(grep -oP '\d+(?= failed)' test-output.log | head -1 || echo "0")
+        SKIPPED=$(grep -oP '\d+(?= skipped)' test-output.log | head -1 || echo "0")
+        FLAKY=$(grep -oP '\d+(?= flaky)' test-output.log | head -1 || echo "0")
+        
+        # Set defaults if empty
+        PASSED=${PASSED:-0}
+        FAILED=${FAILED:-0}
+        SKIPPED=${SKIPPED:-0}
+        FLAKY=${FLAKY:-0}
+        
+        # Calculate total
+        TOTAL=$((PASSED + FAILED + SKIPPED + FLAKY))
+        
+        # Get duration from log
+        DURATION=$(grep -oP '\d+(\.\d+)?(?=s)' test-output.log | tail -1 || echo "0")
+        
+        # Calculate pass rate
+        if [ "$TOTAL" -gt 0 ]; then
+          PASS_RATE=$((PASSED * 100 / TOTAL))
+        else
+          PASS_RATE=0
+        fi
+        
+        # Determine status and color
+        if [ "$FAILED" -gt 0 ]; then
+          STATUS="FAILED"
+          COLOR="FF0000"
+          EMOJI="❌"
+        elif [ "$FLAKY" -gt 0 ]; then
+          STATUS="FLAKY"
+          COLOR="FFA500"
+          EMOJI="⚠️"
+        else
+          STATUS="PASSED"
+          COLOR="00FF00"
+          EMOJI="✅"
+        fi
+        
+        echo "passed=$PASSED" >> $GITHUB_OUTPUT
+        echo "failed=$FAILED" >> $GITHUB_OUTPUT
+        echo "skipped=$SKIPPED" >> $GITHUB_OUTPUT
+        echo "flaky=$FLAKY" >> $GITHUB_OUTPUT
+        echo "total=$TOTAL" >> $GITHUB_OUTPUT
+        echo "duration=$DURATION" >> $GITHUB_OUTPUT
+        echo "pass_rate=$PASS_RATE" >> $GITHUB_OUTPUT
+        echo "status=$STATUS" >> $GITHUB_OUTPUT
+        echo "color=$COLOR" >> $GITHUB_OUTPUT
+        echo "emoji=$EMOJI" >> $GITHUB_OUTPUT
     
     - name: Install Allure
       if: always()
@@ -76,68 +130,43 @@ jobs:
         publish_dir: ./allure-report
         force_orphan: true
 
-
-    # NOTIFY TO MICROSOFT TEAMS
-
-    - name: Notify Teams - Success
-      if: steps.test.outcome == 'success'
+    # ============================================
+    # NOTIFY TO MICROSOFT TEAMS - DETAILED REPORT
+    # ============================================
+    - name: Notify Teams
+      if: always()
       run: |
-
         curl -H "Content-Type: application/json" -d '{
           "@type": "MessageCard",
           "@context": "http://schema.org/extensions",
-          "themeColor": "00FF00",
-          "summary": "✅ Playwright Tests Passed",
-          "sections": [{
-            "activityTitle": "✅ Playwright Tests Passed",
-            "facts": [
-              { "name": "Repository", "value": "${{ github.repository }}" },
-              { "name": "Branch", "value": "${{ github.ref_name }}" },
-              { "name": "Commit", "value": "${{ github.sha }}" },
-              { "name": "Triggered by", "value": "${{ github.actor }}" }
-            ],
-            "markdown": true
-          }],
-          "potentialAction": [
+          "themeColor": "${{ steps.results.outputs.color }}",
+          "summary": "${{ steps.results.outputs.emoji }} Playwright Tests - ${{ steps.results.outputs.status }}",
+          "sections": [
             {
-              "@type": "OpenUri",
-              "name": "View Report",
-              "targets": [{ "os": "default", "uri": "https://starling26.github.io/api-testing/" }]
-            },
-            {
-              "@type": "OpenUri",
-              "name": "View Workflow",
-              "targets": [{ "os": "default", "uri": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" }]
+              "activityTitle": "${{ steps.results.outputs.emoji }} Playwright Tests - ${{ steps.results.outputs.status }}",
+              "activitySubtitle": "${{ github.repository }} | ${{ github.ref_name }}",
+              "facts": [
+                { "name": "✅ Passed", "value": "${{ steps.results.outputs.passed }}" },
+                { "name": "❌ Failed", "value": "${{ steps.results.outputs.failed }}" },
+                { "name": "⏭️ Skipped", "value": "${{ steps.results.outputs.skipped }}" },
+                { "name": "🔄 Flaky", "value": "${{ steps.results.outputs.flaky }}" },
+                { "name": "📊 Total", "value": "${{ steps.results.outputs.total }}" },
+                { "name": "📈 Pass Rate", "value": "${{ steps.results.outputs.pass_rate }}%" },
+                { "name": "⏱️ Duration", "value": "${{ steps.results.outputs.duration }}s" },
+                { "name": "👤 Triggered by", "value": "${{ github.actor }}" }
+              ],
+              "markdown": true
             }
-          ]
-        }' ${{ secrets.TEAMS_WEBHOOK_URL }}
-    - name: Notify Teams - Failure
-      if: steps.test.outcome == 'failure'
-      run: |
-        curl -H "Content-Type: application/json" -d '{
-          "@type": "MessageCard",
-          "@context": "http://schema.org/extensions",
-          "themeColor": "FF0000",
-          "summary": "❌ Playwright Tests Failed",
-          "sections": [{
-            "activityTitle": "❌ Playwright Tests Failed",
-            "facts": [
-              { "name": "Repository", "value": "${{ github.repository }}" },
-              { "name": "Branch", "value": "${{ github.ref_name }}" },
-              { "name": "Commit", "value": "${{ github.sha }}" },
-              { "name": "Triggered by", "value": "${{ github.actor }}" }
-            ],
-            "markdown": true
-          }],
+          ],
           "potentialAction": [
             {
               "@type": "OpenUri",
-              "name": "View Report",
+              "name": "📊 View Allure Report",
               "targets": [{ "os": "default", "uri": "https://starling26.github.io/api-testing/" }]
             },
             {
               "@type": "OpenUri",
-              "name": "View Workflow",
+              "name": "⚙️ View Workflow",
               "targets": [{ "os": "default", "uri": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" }]
             }
           ]
