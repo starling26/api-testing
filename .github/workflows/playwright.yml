@@ -1,10 +1,20 @@
 name: Playwright Tests with Allure Report
 
 on:
+  # Se ejecuta en TODOS los push a cualquier rama
   push:
-    branches: [ main, master ]
+    branches: [ '**' ]
+  
+  # Se ejecuta en TODOS los pull requests
   pull_request:
-    branches: [ main, master ]
+    branches: [ '**' ]
+  
+  # Se ejecuta cuando se hace merge (pull_request closed + merged)
+  pull_request_target:
+    types: [ closed ]
+  
+  # Permite ejecutar manualmente
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -13,6 +23,8 @@ permissions:
 
 jobs:
   test:
+    # Solo ejecutar si NO es un PR cerrado sin merge
+    if: github.event_name != 'pull_request_target' || github.event.pull_request.merged == true
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
@@ -36,8 +48,8 @@ jobs:
       id: results
       if: always()
       run: |
-        # Parse results from Playwright log output (more reliable)
-        # Example output: "162 passed, 1 failed (4s)"
+        # Parse results from Playwright log output
+        # Example: "162 passed, 1 flaky, 1 failed (4s)"
         
         PASSED=$(grep -oE '[0-9]+ passed' test-output.log | grep -oE '[0-9]+' | head -1)
         FAILED=$(grep -oE '[0-9]+ failed' test-output.log | grep -oE '[0-9]+' | head -1)
@@ -50,16 +62,26 @@ jobs:
         SKIPPED=${SKIPPED:-0}
         FLAKY=${FLAKY:-0}
         
-        # Calculate total
-        TOTAL=$((PASSED + FAILED + SKIPPED))
+        # Calculate total (tests únicos, sin contar reintentos)
+        # Total = passed + failed + skipped + flaky (flaky son tests que pasaron después de reintentos)
+        TOTAL=$((PASSED + FAILED + SKIPPED + FLAKY))
         
-        # Get duration (e.g., "4s" or "1m 30s")
+        # Si hay flaky, restamos del passed porque Playwright los cuenta doble
+        if [ "$FLAKY" -gt 0 ]; then
+          PASSED=$((PASSED - FLAKY))
+        fi
+        
+        # Recalcular total correctamente
+        TOTAL=$((PASSED + FAILED + SKIPPED + FLAKY))
+        
+        # Get duration
         DURATION=$(grep -oE '\([0-9]+\.?[0-9]*s\)' test-output.log | tail -1 | tr -d '()s')
         DURATION=${DURATION:-0}
         
-        # Calculate pass rate
+        # Calculate pass rate (passed + flaky = successful)
+        SUCCESSFUL=$((PASSED + FLAKY))
         if [ "$TOTAL" -gt 0 ]; then
-          PASS_RATE=$((PASSED * 100 / TOTAL))
+          PASS_RATE=$((SUCCESSFUL * 100 / TOTAL))
         else
           PASS_RATE=0
         fi
@@ -133,8 +155,9 @@ jobs:
         publish_dir: ./allure-report
         force_orphan: true
 
+    # ============================================
     # NOTIFY TO MICROSOFT TEAMS - DETAILED REPORT
-    
+    # ============================================
     - name: Notify Teams
       if: always()
       run: |
