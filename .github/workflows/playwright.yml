@@ -1,19 +1,19 @@
 name: Playwright Tests with Allure Report
 
 on:
-  # Se ejecuta en TODOS los push a cualquier rama
+  # Runs on ALL pushes to any branch
   push:
     branches: [ '**' ]
   
-  # Se ejecuta en TODOS los pull requests
+  # Runs on ALL pull requests
   pull_request:
     branches: [ '**' ]
   
-  # Se ejecuta cuando se hace merge (pull_request closed + merged)
+  # Runs when merge happens (pull_request closed + merged)
   pull_request_target:
     types: [ closed ]
   
-  # Permite ejecutar manualmente
+  # Allows manual execution
   workflow_dispatch:
 
 permissions:
@@ -23,7 +23,7 @@ permissions:
 
 jobs:
   test:
-    # Solo ejecutar si NO es un PR cerrado sin merge
+    # Only run if it's NOT a closed PR without merge
     if: github.event_name != 'pull_request_target' || github.event.pull_request.merged == true
     timeout-minutes: 60
     runs-on: ubuntu-latest
@@ -62,16 +62,16 @@ jobs:
         SKIPPED=${SKIPPED:-0}
         FLAKY=${FLAKY:-0}
         
-        # Calculate total (tests únicos, sin contar reintentos)
-        # Total = passed + failed + skipped + flaky (flaky son tests que pasaron después de reintentos)
+        # Calculate total (unique tests, without counting retries)
+        # Total = passed + failed + skipped + flaky (flaky are tests that passed after retries)
         TOTAL=$((PASSED + FAILED + SKIPPED + FLAKY))
         
-        # Si hay flaky, restamos del passed porque Playwright los cuenta doble
+        # If there are flaky tests, subtract from passed because Playwright counts them twice
         if [ "$FLAKY" -gt 0 ]; then
           PASSED=$((PASSED - FLAKY))
         fi
         
-        # Recalcular total correctamente
+        # Recalculate total correctly
         TOTAL=$((PASSED + FAILED + SKIPPED + FLAKY))
         
         # Get duration
