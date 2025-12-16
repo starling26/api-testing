@@ -110,7 +110,6 @@ jobs:
             }
           ]
         }' ${{ secrets.TEAMS_WEBHOOK_URL }}
-
     - name: Notify Teams - Failure
       if: steps.test.outcome == 'failure'
       run: |
