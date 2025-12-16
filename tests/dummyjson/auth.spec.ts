@@ -6,7 +6,7 @@ test.describe("DummyJSON - Authentication API Tests", () => {
   test("TC-DJ-AUTH-001 - Login with valid Credentials", async ({ auth }) => {
     const response = await auth.login(AuthData.auth.validCredentials);
 
-    expect(response.status()).toBe(200);
+    expect(response.status()).toBe(206);
     const responseBody = await response.json();
     expect(responseBody).toHaveProperty("accessToken");
   });
