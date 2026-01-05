@@ -34,17 +34,17 @@ test.describe("DummyJSON Carts API Negative Tests", () => {
 
     test("TC-DJ-CART-NEG-006: Get Carts by Non-existent User", async ({carts}) => {
     const response = await carts.getcartsByUser(CartsNegativeData.nonExistentUserId);
-    expect([404, 200]).toContain(response.status());
+    expect(response.status()).toBe(404);
     });
 
     test("TC-DJ-CART-NEG-007: Add Cart with Missing Required Fields", async ({carts}) => {
     const response = await carts.addNewCart(CartsNegativeData.emptyCartData);
-    expect(response.status()).toBe(404);
+    expect(response.status()).toBe(400);
     });
 
     test("TC-DJ-CART-NEG-008: Add Cart with Invalid Product ID", async ({carts}) => {
     const response = await carts.addNewCart(CartsNegativeData.cartWithInvalidProductId);
-    expect(response.status()).toBe(404);
+    expect(response.status()).toBe(400);
     });
 
     test("TC-DJ-CART-NEG-009: Update Cart with Non-existent ID", async ({carts}) => {
