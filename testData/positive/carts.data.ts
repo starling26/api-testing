@@ -11,7 +11,7 @@ export const CartData = {
       userId: 5,
       products: [
         { productId: 1, quantity: 3 },
-        { productId: 2, quantity: 2 }
+        
       ]
     },
     singleCart: {

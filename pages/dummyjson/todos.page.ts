@@ -29,9 +29,9 @@ export class TodosPage {
     });
   }
 
-  updateTodo(todoId: number, todoData: number) {
-    return this.request.put('/todos/1', {
-      data: todoData 
+  updateTodo(todoId: number, todoData: any) {
+    return this.request.put(`/todos/${todoId}`, {
+      data: todoData
     });
   }
 
