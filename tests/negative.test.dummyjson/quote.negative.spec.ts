@@ -84,7 +84,6 @@ test.describe("DummyJSON Quotes API Negative Tests", () => {
   });
 
   test("TC-DJ-QUOTE-NEG-010: Limit Quotes with Non-numeric Skip", async ({quotes}) => {
-    //This test should fail with 400 Bad Request but DummyJSON API currently returns 200 OK.
     const response = await quotes.limitSkipQuotes(QuotesNegativeData.nonNumericSkip.limit, 
       QuotesNegativeData.nonNumericSkip.skip as unknown as number);
     expect(response.status()).toBe(400);

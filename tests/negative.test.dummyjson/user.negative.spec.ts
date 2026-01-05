@@ -5,25 +5,19 @@ import{UserNegativeData} from"../../testData/negative/user.negative.data";
 
 test.describe("DummyJSON Users API Negative Tests", () => {
 
-  test.fixme("TC-DJ-USER-NEG-001: Get Single User with Invalid ID", async ({user}) => {
-  //This test should fail with 400 Bad Request when an invalid user ID is provided but DummyJSON API returns 200 with empty object.
-
+  test("TC-DJ-USER-NEG-001: Get Single User with Invalid ID", async ({user}) => {
     const response = await user.getSingleUser(UserNegativeData.invalidUserId);
     expect(response.status()).toBe(400);
   });
 
-  test.fixme("TC-DJ-USER-NEG-002: Get Single User with Non-existent ID", async ({user}) => {
-     //This test should fail with 400 Bad Request when an invalid user ID is provided but DummyJSON API returns 200 with empty object.
-
+  test("TC-DJ-USER-NEG-002: Get Single User with Non-existent ID", async ({user}) => {
     const response = await user.getSingleUser(UserNegativeData.nonExistentUserId);
     expect(response.status()).toBe(404);
   });
 
-  test.fixme("TC-DJ-USER-NEG-003: Login User with Invalid Credentials", async ({user}) => {
-    //This test should fail with 401 Bad Request when an invalid user ID is provided but DummyJSON API returns 401 with empty object.
-
+  test("TC-DJ-USER-NEG-003: Login User with Invalid Credentials", async ({user}) => {
     const response = await user.loginUser(UserNegativeData.invalidCredentials);
-    expect(response.status()).toBe(401);
+    expect(response.status()).toBe(400);
   });
 
   test("TC-DJ-USER-NEG-004: Login User with Empty Credentials", async ({user}) => {
@@ -52,7 +46,7 @@ test.describe("DummyJSON Users API Negative Tests", () => {
   });
 
   test.fixme("TC-DJ-USER-NEG-008: Add User with Missing Required Fields", async ({user}) => {
-    //This test should fail with 400 Bad Request when an invalid user ID is provided but DummyJSON API returns 200 with empty object.
+    //This test should fail with 400 Bad Request when an invalid user ID is provided but DummyJSON API returns 201 with empty object.
 
     const response = await user.addUser(UserNegativeData.emptyUserData);
     expect(response.status()).toBe(400);

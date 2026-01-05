@@ -25,11 +25,11 @@ test.describe("DummyJSON Comments API Negative Tests", () => {
     expect(responseBody).toHaveProperty("message");
   });
 
-  test("NEG-TC-DJ-COM-004: Get Comments by Invalid Post ID", async ({comments}) => {
+  test.fixme("NEG-TC-DJ-COM-004: Get Comments by Invalid Post ID", async ({comments}) => {
     // API currently returns 200 for invalid post ID instead of expected 400/404
     
     const response = await comments.getCommentsByPostId(CommentsNegativeData.invalidPostId);
-    expect(response.status()).toBe(200);
+    expect(response.status()).toBe(400);
     const responseBody = await response.json();
     expect(responseBody).toBeDefined();
   });

@@ -12,11 +12,9 @@ export class RecipesPage {
     return this.request.get(`/recipes/${id}`);
   }
 
-  getRecipeByInvalidId(id: any) {
-    return this.request.get(`/recipes/`, {
-      params: { id: id }
-    });
-  }
+   getRecipeByInvalidId(id: any) {
+     return this.request.get(`/recipes/${id}`);
+}
 
   searchRecipes(query: string) {
     return this.request.get('/recipes/search?', {
@@ -50,9 +48,7 @@ export class RecipesPage {
     return this.request.get(`/recipes/tag/${tag}`);
   }
   nonExistentTag(tag: string) {
-    return this.request.get(`/recipes/tag/`,{
-      params: { tag: tag }
-    });
+      return this.request.get(`/recipes/tag/${tag}`);
   }
 
   getRecipesByMealType(mealType: string) {
@@ -60,9 +56,7 @@ export class RecipesPage {
   }
 
   getRecipesByNonExistentMealType(mealType: string) {
-    return this.request.get(`/recipes/meal-type/`, {
-      params: { mealType: mealType }
-    });
+      return this.request.get(`/recipes/meal-type/${mealType}`);
   }
 
   addRecipe(data: any) {

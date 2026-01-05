@@ -19,11 +19,11 @@ export class CartsPage {
   }
 
   addNewCart(data: any) {
-    return this.request.post(`/carts`, { data });
+    return this.request.post(`/carts/add`);
   }
 
   updateAcart(id: number, data: any) {
-    return this.request.put(`/carts/${id}`, { data });
+    return this.request.put(`/carts/${id}`);
   }
 
   deleteAcart(id: number) {

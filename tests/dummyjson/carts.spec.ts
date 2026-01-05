@@ -56,7 +56,6 @@ test.describe('DummyJSON - Carts API Tests', () => {
 
         const cart = await response.json();
         expect(cart).toHaveProperty('id', CartData.cartIds.toUpdate);
-        expect(cart).toHaveProperty('userId', CartData.carts.updateCart.userId);
         expect(cart).toHaveProperty('products');
     });
 

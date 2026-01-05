@@ -30,7 +30,9 @@ export class TodosPage {
   }
 
   updateTodo(todoId: number, todoData: any) {
-    return this.request.put(`/todos/${todoId}`, { data: todoData });
+    return this.request.put(`/todos/${todoId}`, {
+      data: todoData
+    });
   }
 
   deleteTodo(todoId: number) {
