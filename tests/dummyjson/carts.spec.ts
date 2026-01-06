@@ -58,6 +58,7 @@ test.describe('DummyJSON - Carts API Tests', () => {
         expect(cart).toHaveProperty('id', CartData.cartIds.toUpdate);
         expect(cart).toHaveProperty('products');
     });
+    
 
     test('TC-DJ-CART-006: Delete a Cart', async ({ carts }) => {
         const response = await carts.deleteAcart(CartData.cartIds.toDelete);
