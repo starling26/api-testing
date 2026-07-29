@@ -15,6 +15,7 @@ test.describe('DummyJSON - Carts API Tests', () => {
         expect(responseBody).toHaveProperty('limit');
     });
 
+    
     test('TC-DJ-CART-002: Get a single Cart', async ({ carts }) => {
         const response = await carts.getAsingleCart(CartData.cartIds.toUpdate);
         expect(response.status()).toBe(200);
@@ -68,6 +69,7 @@ test.describe('DummyJSON - Carts API Tests', () => {
         expect(responseBody.isDeleted).toBe(true);
         expect(responseBody).toHaveProperty('id', CartData.cartIds.toDelete);
     });
+
 
 
 });
